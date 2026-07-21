@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # MongoDB Database Container
+  mongo:
+    image: mongo:7.0
+    container_name: freshcart-mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: freshcart123
+      MONGO_INITDB_DATABASE: freshcartdb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/init.js:ro
+    networks:
+      - freshcart-network
+    healthcheck:
+      test: echo 'db.adminCommand("ping")' | mongosh -u admin -p freshcart123 --authenticationDatabase admin
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend FastAPI App Container (optional / production deployment)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: freshcart-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGODB_URI=mongodb://admin:freshcart123@mongo:27017/freshcartdb?authSource=admin
+      - JWT_SECRET=freshcart-secret-key-change-this-in-production
+    volumes:
+      - ./backend/invoices:/app/invoices
+      - ./backend/uploads:/app/uploads
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - freshcart-network
+
+volumes:
+  mongo-data:
+
+networks:
+  freshcart-network:
+    driver: bridge

@@ -1,0 +1,23 @@
+# Ignore dependencies
+node_modules/
+.next/
+out/
+dist/
+
+# Environment
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache/
+*.log

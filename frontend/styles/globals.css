@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Aptos Display', 'Segoe UI Variable', 'Trebuchet MS', sans-serif;
+  background-color: #f6f7f2;
+  background-image: linear-gradient(rgba(29, 78, 45, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(29, 78, 45, 0.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: #173521;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: #bde77d;
+  color: #173521;
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-semibold transition-colors;
+  }
+
+  .btn-primary {
+    @apply bg-emerald-800 text-white hover:bg-emerald-900;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-900 hover:bg-gray-300;
+  }
+
+  .card {
+    @apply bg-white rounded-lg border border-emerald-950/10 shadow-sm hover:shadow-md transition-shadow;
+  }
+
+  .input {
+    @apply px-4 py-2 border border-emerald-950/15 rounded-md focus:outline-none focus:border-emerald-700 focus:ring-2 focus:ring-lime-300/60;
+  }
+}

@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreshCart — Project Proposal</title>
+<style>
+:root {
+  --g900:#1B4332;--g800:#2D6A4F;--g600:#40916C;--g400:#52B788;--g200:#95D5B2;--g100:#D8F3DC;--g50:#F0FFF4;
+  --a500:#F4A261;--a700:#E76F51;
+  --bg:#F7F9F7;--white:#FFFFFF;--dark:#111A11;--gray:#4E5E4E;--lgray:#8A9A8A;--border:#DDE8DD;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);line-height:1.6;}
+/* ── HERO ──────────────────────────────────────────────── */
+.hero{background:linear-gradient(140deg,#0f2419 0%,#1B4332 45%,#2D6A4F 100%);padding:88px 48px 96px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 20% 50%,rgba(82,183,136,.18) 0,transparent 70%),radial-gradient(ellipse 40% 50% at 80% 30%,rgba(244,162,97,.12) 0,transparent 60%);pointer-events:none;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:var(--g200);padding:5px 16px;border-radius:30px;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:28px;}
+.hero h1{font-size:62px;font-weight:900;color:#fff;letter-spacing:-2.5px;line-height:1.05;margin-bottom:20px;}
+.hero h1 em{color:var(--a500);font-style:normal;}
+.hero-sub{color:var(--g200);font-size:17px;max-width:500px;margin:0 auto 44px;line-height:1.75;}
+.hero-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.pill{padding:7px 18px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.85);}
+.pill-solid{background:var(--a500);border-color:var(--a500);color:#fff;font-weight:700;}
+/* ── SECTION PATTERNS ──────────────────────────────────── */
+.sec{padding:80px 48px;max-width:1080px;margin:0 auto;}
+.sec-white{background:var(--white);}
+.sec-white .inner{max-width:1080px;margin:0 auto;padding:80px 48px;}
+.sec-dark{background:var(--g900);}
+.sec-dark .inner{max-width:1080px;margin:0 auto;padding:80px 48px;}
+.eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--g400);margin-bottom:10px;}
+.sec-dark .eyebrow{color:var(--g200);}
+h2{font-size:38px;font-weight:900;letter-spacing:-1.2px;line-height:1.15;margin-bottom:12px;color:var(--dark);}
+.sec-dark h2{color:#fff;}
+.lead{color:var(--gray);font-size:15px;max-width:540px;line-height:1.75;margin-bottom:52px;}
+.sec-dark .lead{color:var(--g200);}
+/* ── FEATURE CARDS ─────────────────────────────────────── */
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+@media(max-width:700px){.g3,.g2{grid-template-columns:1fr;}}
+.card{background:var(--white);border:1.5px solid var(--border);border-radius:18px;padding:28px;transition:box-shadow .2s,transform .2s;}
+.card:hover{box-shadow:0 8px 40px rgba(27,67,50,.1);transform:translateY(-3px);}
+.card-icon{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;}
+.ic-g{background:var(--g100);}
+.ic-a{background:#fef3e2;}
+.ic-b{background:#e8f0fe;}
+.ic-p{background:#f0ebfe;}
+.card h3{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:7px;}
+.card p{font-size:13px;color:var(--gray);line-height:1.7;}
+/* ── HOW IT WORKS ──────────────────────────────────────── */
+.steps{display:flex;gap:0;overflow-x:auto;padding-bottom:4px;margin-top:8px;}
+.step{flex:1;min-width:130px;text-align:center;position:relative;padding:0 8px;}
+.step::after{content:'';position:absolute;top:20px;left:50%;width:100%;height:2px;background:var(--g100);z-index:0;}
+.step:last-child::after{display:none;}
+.step-n{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff;margin:0 auto 12px;position:relative;z-index:1;background:var(--g800);}
+.step-n.am{background:var(--a500);}
+.step-lbl{font-size:13px;font-weight:700;color:var(--dark);line-height:1.3;}
+.step-sub{font-size:11px;color:var(--lgray);margin-top:3px;}
+/* ── PHONES ────────────────────────────────────────────── */
+.phones{display:flex;gap:20px;justify-content:center;align-items:flex-end;flex-wrap:wrap;margin-top:40px;}
+.phone-col{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.phone-tag{font-size:11px;font-weight:700;color:var(--g200);text-transform:uppercase;letter-spacing:.8px;}
+/* ── ADMIN MOCKUP ──────────────────────────────────────── */
+.browser-wrap{background:var(--white);border:1.5px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 20px 60px rgba(27,67,50,.12);margin-top:20px;}
+.browser-bar{background:#f0f2f0;border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:10px;}
+.brdot{width:12px;height:12px;border-radius:50%;}
+.brdot-r{background:#ff5f57;} .brdot-y{background:#febc2e;} .brdot-g{background:#28c840;}
+.brloc{flex:1;background:var(--white);border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-size:12px;color:var(--lgray);max-width:400px;margin:0 auto;}
+/* ── TECH TABLE ────────────────────────────────────────── */
+.ttable{width:100%;border-collapse:collapse;font-size:13px;}
+.ttable th{background:var(--g900);color:var(--g200);text-align:left;padding:10px 16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.ttable td{padding:11px 16px;border-bottom:1px solid var(--border);color:var(--gray);vertical-align:top;}
+.ttable td:first-child{font-weight:700;color:var(--dark);width:140px;}
+.ttable td:nth-child(2){color:var(--g800);font-weight:600;}
+.ttable tr:last-child td{border-bottom:none;}
+.ttable tr:nth-child(even) td{background:var(--bg);}
+code{background:var(--g100);color:var(--g800);padding:1px 6px;border-radius:4px;font-family:'SF Mono','Fira Code',monospace;font-size:11px;}
+/* ── CODE ──────────────────────────────────────────────── */
+pre{background:#0b1a12;color:#cde8d0;padding:22px 26px;border-radius:14px;font-size:12px;line-height:1.85;overflow-x:auto;font-family:'SF Mono','Fira Code',monospace;border:1px solid rgba(82,183,136,.2);margin:16px 0;}
+pre code{background:none;color:inherit;padding:0;font-size:inherit;}
+.ky{color:#95d5b2;} .st{color:#74c69d;} .vl{color:#f4a261;} .cm{color:#4a7a5a;} .kw{color:#a8d8b0;}
+/* ── TIMELINE ──────────────────────────────────────────── */
+.tl{position:relative;padding-left:32px;}
+.tl::before{content:'';position:absolute;left:11px;top:10px;bottom:10px;width:2px;background:rgba(255,255,255,.15);}
+.tli{position:relative;margin-bottom:30px;}
+.tld{position:absolute;left:-25px;top:6px;width:16px;height:16px;border-radius:50%;background:var(--a500);border:3px solid var(--g900);}
+.tlph{font-size:11px;font-weight:700;color:var(--a500);text-transform:uppercase;letter-spacing:.6px;}
+.tlt{font-size:17px;font-weight:800;color:#fff;margin:3px 0 5px;letter-spacing:-.3px;}
+.tls{font-size:13px;color:var(--g200);line-height:1.65;}
+.tlw{display:inline-block;background:rgba(244,162,97,.15);color:var(--a500);padding:1px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-left:8px;}
+/* ── STATUS BADGES ─────────────────────────────────────── */
+.bdg{display:inline-block;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.bdg-g{background:var(--g100);color:var(--g800);}
+.bdg-a{background:#fef3e2;color:#c05c00;}
+.bdg-b{background:#e8f0fe;color:#1a3a8f;}
+.bdg-p{background:#f0ebfe;color:#5b21b6;}
+/* ── FOOTER ────────────────────────────────────────────── */
+.footer{background:var(--g900);text-align:center;padding:56px 48px 48px;}
+.footer h3{font-size:26px;font-weight:900;color:#fff;letter-spacing:-.5px;margin-bottom:10px;}
+.footer p{color:var(--g200);font-size:14px;max-width:480px;margin:0 auto 32px;line-height:1.7;}
+.footer-meta{font-size:12px;color:var(--lgray);border-top:1px solid rgba(255,255,255,.08);padding-top:24px;margin-top:8px;}
+.divider{height:1px;background:var(--border);}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-eyebrow">🛒 Client Proposal · 2024</div>
+  <h1>Fresh<em>Cart</em></h1>
+  <p class="hero-sub">A complete grocery ordering platform — customers order via phone OTP, shop owner gets WhatsApp alerts, and bills are auto-sent when packing is done.</p>
+  <div class="hero-pills">
+    <span class="pill">Next.js Frontend</span>
+    <span class="pill">Python FastAPI</span>
+    <span class="pill">MongoDB + Docker</span>
+    <span class="pill">WhatsApp Notify</span>
+    <span class="pill-solid">Auto Bill Generation</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     OVERVIEW CARDS
+═══════════════════════════════════════════ -->
+<div class="sec">
+  <div class="eyebrow">What we're building</div>
+  <h2>One app, two experiences</h2>
+  <p class="lead">A mobile-first ordering platform for the shop, with a powerful admin panel for the owner — all connected in real time.</p>
+  <div class="g3">
+    <div class="card">
+      <div class="card-icon ic-g">📱</div>
+      <h3>OTP Login</h3>
+      <p>Customers sign in with just a phone number — no passwords. One-time OTP sent via SMS. Instant, friction-free access.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon ic-a">📲</div>
+      <h3>WhatsApp Alerts</h3>
+      <p>The moment a customer places an order, the shop owner receives a full item list on WhatsApp — packed and ready in seconds.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon ic-g">🧾</div>
+      <h3>Auto Bill Generation</h3>
+      <p>When the owner clicks "Done", a professional PDF bill is instantly generated and sent to the customer — zero manual work.</p>
+    </div>
+    <div class="card" style="margin-top:4px">
+      <div class="card-icon ic-b">🛍</div>
+      <h3>Smart Cart</h3>
+      <p>Price-snapshotted cart ensures customers always see the price they were shown, even if the owner updates it later.</p>
+    </div>
+    <div class="card" style="margin-top:4px">
+      <div class="card-icon ic-p">🗃</div>
+      <h3>Admin Panel</h3>
+      <p>Owner manages products, categories, stock, and live orders — all from a clean web dashboard. No app install needed.</p>
+    </div>
+    <div class="card" style="margin-top:4px">
+      <div class="card-icon ic-g">🔄</div>
+      <h3>Live Order Status</h3>
+      <p>Customers see real-time order status updates: Placed → Packing → Ready → Billed. App refreshes automatically.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════
+     HOW IT WORKS
+═══════════════════════════════════════════ -->
+<div class="sec-white">
+  <div class="inner">
+    <div class="eyebrow">User Journey</div>
+    <h2>How it works</h2>
+    <p class="lead">The entire ordering cycle — from phone login to receiving the bill — in one seamless flow.</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div class="step-lbl">OTP Login</div><div class="step-sub">Phone number only</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-lbl">Browse &amp; Cart</div><div class="step-sub">Add items, set qty</div></div>
+      <div class="step"><div class="step-n am">3</div><div class="step-lbl">Place Order</div><div class="step-sub">Click "Done"</div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-lbl">Owner Gets WA</div><div class="step-sub">Full item list</div></div>
+      <div class="step"><div class="step-n">5</div><div class="step-lbl">Packs Goods</div><div class="step-sub">Admin panel</div></div>
+      <div class="step"><div class="step-n am">6</div><div class="step-lbl">Owner Clicks Done</div><div class="step-sub">Bill generated</div></div>
+      <div class="step"><div class="step-n">7</div><div class="step-lbl">Customer Gets Bill</div><div class="step-sub">PDF + notification</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     CUSTOMER APP SCREENS
+═══════════════════════════════════════════ -->
+<div class="sec-dark">
+  <div class="inner">
+    <div class="eyebrow">Customer App Design</div>
+    <h2>Mobile-first screens</h2>
+    <p class="lead">Every customer interaction — from login to viewing their bill — designed for a fast, clean mobile experience.</p>
+    <div class="phones">
+
+      <!-- PHONE 1: LOGIN -->
+      <div class="phone-col">
+        <svg width="220" height="440" viewBox="0 0 220 440" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="216" height="436" rx="34" fill="#111"/>
+          <rect x="11" y="11" width="198" height="418" rx="26" fill="#fff"/>
+          <rect x="11" y="11" width="198" height="42" rx="26" fill="#2D6A4F"/>
+          <rect x="11" y="37" width="198" height="16" fill="#2D6A4F"/>
+          <text x="30" y="30" font-family="system-ui" font-size="10" font-weight="600" fill="white">9:41</text>
+          <text x="162" y="30" font-family="system-ui" font-size="9" fill="rgba(255,255,255,.7)">●●● ▮</text>
+          <rect x="74" y="11" width="72" height="20" rx="10" fill="#111"/>
+          <!-- Logo area -->
+          <circle cx="110" cy="108" r="32" fill="#D8F3DC"/>
+          <text x="110" y="120" text-anchor="middle" font-size="26">🛒</text>
+          <text x="110" y="158" text-anchor="middle" font-family="system-ui" font-size="19" font-weight="900" fill="#1B4332">FreshCart</text>
+          <text x="110" y="174" text-anchor="middle" font-family="system-ui" font-size="10" fill="#6B7B6B">Your local grocery, online</text>
+          <!-- Input label -->
+          <text x="24" y="208" font-family="system-ui" font-size="10" font-weight="700" fill="#4E5E4E">Phone Number</text>
+          <rect x="22" y="214" width="176" height="34" rx="9" fill="#F7F9F7" stroke="#D8F3DC" stroke-width="1.5"/>
+          <rect x="24" y="216" width="36" height="30" rx="7" fill="#D8F3DC"/>
+          <text x="42" y="236" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="700" fill="#2D6A4F">+91</text>
+          <text x="120" y="236" text-anchor="middle" font-family="system-ui" font-size="10" fill="#b0bfb0">9XXXXXXXXX</text>
+          <!-- OTP Button -->
+          <rect x="22" y="260" width="176" height="38" rx="11" fill="#2D6A4F"/>
+          <text x="110" y="284" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="700" fill="white">Send OTP →</text>
+          <!-- 6 digit boxes -->
+          <text x="24" y="320" font-family="system-ui" font-size="9" font-weight="700" fill="#4E5E4E">Enter 6-digit OTP</text>
+          <rect x="22" y="328" width="24" height="28" rx="6" fill="#F7F9F7" stroke="#2D6A4F" stroke-width="1.5"/><text x="34" y="347" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="700" fill="#2D6A4F">5</text>
+          <rect x="52" y="328" width="24" height="28" rx="6" fill="#F7F9F7" stroke="#D8F3DC" stroke-width="1.5"/>
+          <rect x="82" y="328" width="24" height="28" rx="6" fill="#F7F9F7" stroke="#D8F3DC" stroke-width="1.5"/>
+          <rect x="112" y="328" width="24" height="28" rx="6" fill="#F7F9F7" stroke="#D8F3DC" stroke-width="1.5"/>
+          <rect x="142" y="328" width="24" height="28" rx="6" fill="#F7F9F7" stroke="#D8F3DC" stroke-width="1.5"/>
+          <rect x="172" y="328" width="24" height="28" rx="6" fill="#F7F9F7" stroke="#D8F3DC" stroke-width="1.5"/>
+          <!-- Verify button -->
+          <rect x="22" y="370" width="176" height="36" rx="10" fill="#52B788"/>
+          <text x="110" y="392" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="700" fill="white">✓ Verify &amp; Login</text>
+          <rect x="75" y="425" width="70" height="4" rx="2" fill="#111" opacity=".15"/>
+        </svg>
+        <div class="phone-tag">Login</div>
+      </div>
+
+      <!-- PHONE 2: PRODUCTS -->
+      <div class="phone-col">
+        <svg width="220" height="440" viewBox="0 0 220 440" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="216" height="436" rx="34" fill="#111"/>
+          <rect x="11" y="11" width="198" height="418" rx="26" fill="#fff"/>
+          <!-- Green header -->
+          <rect x="11" y="11" width="198" height="80" rx="26" fill="#2D6A4F"/>
+          <rect x="11" y="64" width="198" height="27" fill="#2D6A4F"/>
+          <rect x="74" y="11" width="72" height="20" rx="10" fill="#111"/>
+          <text x="30" y="28" font-family="system-ui" font-size="9" font-weight="600" fill="rgba(255,255,255,.7)">9:41</text>
+          <text x="110" y="52" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="800" fill="#fff">Good morning 👋</text>
+          <text x="110" y="64" text-anchor="middle" font-family="system-ui" font-size="9" fill="rgba(255,255,255,.7)">What do you need today?</text>
+          <!-- Search bar -->
+          <rect x="22" y="72" width="176" height="28" rx="8" fill="rgba(255,255,255,.18)" stroke="rgba(255,255,255,.25)" stroke-width="1"/>
+          <text x="38" y="90" font-family="system-ui" font-size="12" fill="rgba(255,255,255,.7)">🔍</text>
+          <text x="56" y="90" font-family="system-ui" font-size="10" fill="rgba(255,255,255,.55)">Search groceries…</text>
+          <!-- Category chips -->
+          <rect x="22" y="104" width="36" height="18" rx="9" fill="#2D6A4F"/>
+          <text x="40" y="117" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700" fill="#fff">All</text>
+          <rect x="62" y="104" width="52" height="18" rx="9" fill="#F7F9F7" stroke="#D8F3DC" stroke-width="1"/>
+          <text x="88" y="117" text-anchor="middle" font-family="system-ui" font-size="9" fill="#4E5E4E">🥬 Veggies</text>
+          <rect x="118" y="104" width="40" height="18" rx="9" fill="#F7F9F7" stroke="#D8F3DC" stroke-width="1"/>
+          <text x="138" y="117" text-anchor="middle" font-family="system-ui" font-size="9" fill="#4E5E4E">🥛 Dairy</text>
+          <rect x="162" y="104" width="38" height="18" rx="9" fill="#F7F9F7" stroke="#D8F3DC" stroke-width="1"/>
+          <text x="181" y="117" text-anchor="middle" font-family="system-ui" font-size="9" fill="#4E5E4E">🌾 Dal</text>
+          <!-- Products label -->
+          <text x="22" y="138" font-family="system-ui" font-size="11" font-weight="800" fill="#111A11">Products</text>
+          <!-- Product cards 2x3 grid -->
+          <!-- Row 1 -->
+          <rect x="22" y="144" width="84" height="82" rx="10" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+          <rect x="34" y="150" width="60" height="44" rx="6" fill="#fee2e2"/>
+          <text x="64" y="178" text-anchor="middle" font-size="22">🍅</text>
+          <text x="64" y="204" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700" fill="#111">Tomatoes</text>
+          <text x="64" y="218" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6B7B6B">₹25/kg</text>
+          <rect x="86" y="208" width="18" height="18" rx="5" fill="#2D6A4F"/>
+          <text x="95" y="220" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="700" fill="#fff">+</text>
+
+          <rect x="114" y="144" width="84" height="82" rx="10" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+          <rect x="126" y="150" width="60" height="44" rx="6" fill="#dbeafe"/>
+          <text x="156" y="178" text-anchor="middle" font-size="22">🥛</text>
+          <text x="156" y="204" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700" fill="#111">Milk 1L</text>
+          <text x="156" y="218" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6B7B6B">₹60/litre</text>
+          <rect x="178" y="208" width="18" height="18" rx="5" fill="#2D6A4F"/>
+          <text x="187" y="220" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="700" fill="#fff">+</text>
+
+          <!-- Row 2 -->
+          <rect x="22" y="232" width="84" height="82" rx="10" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+          <rect x="34" y="238" width="60" height="44" rx="6" fill="#fef9c3"/>
+          <text x="64" y="266" text-anchor="middle" font-size="22">🧀</text>
+          <text x="64" y="292" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700" fill="#111">Paneer</text>
+          <text x="64" y="306" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6B7B6B">₹80/200g</text>
+          <rect x="86" y="296" width="18" height="18" rx="5" fill="#2D6A4F"/>
+          <text x="95" y="308" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="700" fill="#fff">+</text>
+
+          <rect x="114" y="232" width="84" height="82" rx="10" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+          <rect x="126" y="238" width="60" height="44" rx="6" fill="#fce7f3"/>
+          <text x="156" y="266" text-anchor="middle" font-size="22">🧅</text>
+          <text x="156" y="292" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700" fill="#111">Onion</text>
+          <text x="156" y="306" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6B7B6B">₹30/kg</text>
+          <rect x="178" y="296" width="18" height="18" rx="5" fill="#2D6A4F"/>
+          <text x="187" y="308" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="700" fill="#fff">+</text>
+
+          <!-- Row 3 -->
+          <rect x="22" y="320" width="84" height="82" rx="10" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+          <rect x="34" y="326" width="60" height="44" rx="6" fill="#fef3e2"/>
+          <text x="64" y="354" text-anchor="middle" font-size="22">🌾</text>
+          <text x="64" y="380" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700" fill="#111">Toor Dal</text>
+          <text x="64" y="394" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6B7B6B">₹120/kg</text>
+          <rect x="86" y="384" width="18" height="18" rx="5" fill="#2D6A4F"/>
+          <text x="95" y="396" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="700" fill="#fff">+</text>
+
+          <rect x="114" y="320" width="84" height="82" rx="10" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+          <rect x="126" y="326" width="60" height="44" rx="6" fill="#d1fae5"/>
+          <text x="156" y="354" text-anchor="middle" font-size="22">🌿</text>
+          <text x="156" y="380" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700" fill="#111">Coriander</text>
+          <text x="156" y="394" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6B7B6B">₹10/bunch</text>
+          <rect x="178" y="384" width="18" height="18" rx="5" fill="#2D6A4F"/>
+          <text x="187" y="396" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="700" fill="#fff">+</text>
+
+          <!-- Cart FAB -->
+          <circle cx="176" cy="408" r="18" fill="#2D6A4F" filter="drop-shadow(0 4px 8px rgba(27,67,50,.4))"/>
+          <text x="176" y="414" text-anchor="middle" font-size="16">🛒</text>
+          <circle cx="188" cy="394" r="7" fill="#F4A261"/>
+          <text x="188" y="398" text-anchor="middle" font-family="system-ui" font-size="8" font-weight="700" fill="#fff">5</text>
+
+          <rect x="75" y="425" width="70" height="4" rx="2" fill="#111" opacity=".15"/>
+        </svg>
+        <div class="phone-tag">Products</div>
+      </div>
+
+      <!-- PHONE 3: CART -->
+      <div class="phone-col">
+        <svg width="220" height="440" viewBox="0 0 220 440" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="216" height="436" rx="34" fill="#111"/>
+          <rect x="11" y="11" width="198" height="418" rx="26" fill="#fff"/>
+          <rect x="11" y="11" width="198" height="44" rx="26" fill="#2D6A4F"/>
+          <rect x="11" y="38" width="198" height="17" fill="#2D6A4F"/>
+          <rect x="74" y="11" width="72" height="20" rx="10" fill="#111"/>
+          <text x="30" y="28" font-family="system-ui" font-size="9" font-weight="600" fill="rgba(255,255,255,.7)">9:41</text>
+          <text x="110" y="36" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="800" fill="#fff">🛒 My Cart</text>
+          <rect x="168" y="22" width="32" height="18" rx="9" fill="rgba(244,162,97,.3)"/>
+          <text x="184" y="34" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700" fill="#F4A261">5 items</text>
+          <!-- Cart items -->
+          <!-- Item 1 -->
+          <rect x="15" y="54" width="190" height="52" rx="0" fill="#fff"/>
+          <rect x="18" y="58" width="38" height="38" rx="8" fill="#fee2e2"/>
+          <text x="37" y="82" text-anchor="middle" font-size="20">🍅</text>
+          <text x="66" y="72" font-family="system-ui" font-size="11" font-weight="700" fill="#111">Tomatoes</text>
+          <text x="66" y="85" font-family="system-ui" font-size="10" fill="#8A9A8A">₹25 / kg</text>
+          <rect x="148" y="60" width="16" height="16" rx="4" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+          <text x="156" y="72" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6B7B6B">−</text>
+          <text x="173" y="72" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="700" fill="#111">2</text>
+          <rect x="183" y="60" width="16" height="16" rx="4" fill="#2D6A4F"/>
+          <text x="191" y="72" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="700" fill="#fff">+</text>
+          <text x="200" y="87" text-anchor="end" font-family="system-ui" font-size="10" font-weight="700" fill="#2D6A4F">₹50</text>
+          <line x1="15" y1="107" x2="205" y2="107" stroke="#F0F4F0" stroke-width="1"/>
+          <!-- Item 2 -->
+          <rect x="18" y="112" width="38" height="38" rx="8" fill="#fef9c3"/>
+          <text x="37" y="136" text-anchor="middle" font-size="20">🧀</text>
+          <text x="66" y="126" font-family="system-ui" font-size="11" font-weight="700" fill="#111">Paneer 200g</text>
+          <text x="66" y="139" font-family="system-ui" font-size="10" fill="#8A9A8A">₹80 / pc</text>
+          <rect x="148" y="114" width="16" height="16" rx="4" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+          <text x="156" y="126" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6B7B6B">−</text>
+          <text x="173" y="126" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="700" fill="#111">1</text>
+          <rect x="183" y="114" width="16" height="16" rx="4" fill="#2D6A4F"/>
+          <text x="191" y="126" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="700" fill="#fff">+</text>
+          <text x="200" y="141" text-anchor="end" font-family="system-ui" font-size="10" font-weight="700" fill="#2D6A4F">₹80</text>
+          <line x1="15" y1="156" x2="205" y2="156" stroke="#F0F4F0" stroke-width="1"/>
+          <!-- Item 3 -->
+          <rect x="18" y="161" width="38" height="38" rx="8" fill="#dbeafe"/>
+          <text x="37" y="185" text-anchor="middle" font-size="20">🥛</text>
+          <text x="66" y="175" font-family="system-ui" font-size="11" font-weight="700" fill="#111">Milk 1L</text>
+          <text x="66" y="188" font-family="system-ui" font-size="10" fill="#8A9A8A">₹60 / litre</text>
+          <rect x="148" y="163" width="16" height="16" rx="4" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+          <text x="156" y="175" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6B7B6B">−</text>
+          <text x="173" y="175" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="700" fill="#111">2</text>
+          <rect x="183" y="163" width="16" height="16" rx="4" fill="#2D6A4F"/>
+          <text x="191" y="175" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="700" fill="#fff">+</text>
+          <text x="200" y="190" text-anchor="end" font-family="system-ui" font-size="10" font-weight="700" fill="#2D6A4F">₹120</text>
+          <line x1="15" y1="206" x2="205" y2="206" stroke="#F0F4F0" stroke-width="1"/>
+          <!-- Item 4 -->
+          <rect x="18" y="211" width="38" height="38" rx="8" fill="#fef3e2"/>
+          <text x="37" y="235" text-anchor="middle" font-size="20">🌾</text>
+          <text x="66" y="225" font-family="system-ui" font-size="11" font-weight="700" fill="#111">Toor Dal 1kg</text>
+          <text x="66" y="238" font-family="system-ui" font-size="10" fill="#8A9A8A">₹120 / kg</text>
+          <rect x="148" y="213" width="16" height="16" rx="4" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+          <text x="156" y="225" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6B7B6B">−</text>
+          <text x="173" y="225" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="700" fill="#111">1</text>
+          <rect x="183" y="213" width="16" height="16" rx="4" fill="#2D6A4F"/>
+          <text x="191" y="225" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="700" fill="#fff">+</text>
+          <text x="200" y="240" text-anchor="end" font-family="system-ui" font-size="10" font-weight="700" fill="#2D6A4F">₹120</text>
+          <!-- Bill summary -->
+          <rect x="15" y="260" width="190" height="64" rx="12" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+          <text x="28" y="278" font-family="system-ui" font-size="10" fill="#8A9A8A">Subtotal</text>
+          <text x="198" y="278" text-anchor="end" font-family="system-ui" font-size="10" fill="#4E5E4E">₹370</text>
+          <text x="28" y="294" font-family="system-ui" font-size="10" fill="#8A9A8A">Items (5)</text>
+          <text x="198" y="294" text-anchor="end" font-family="system-ui" font-size="10" fill="#4E5E4E">5 products</text>
+          <line x1="28" y1="303" x2="198" y2="303" stroke="#DDE8DD" stroke-width="1"/>
+          <text x="28" y="318" font-family="system-ui" font-size="12" font-weight="800" fill="#111">Total</text>
+          <text x="198" y="318" text-anchor="end" font-family="system-ui" font-size="13" font-weight="900" fill="#2D6A4F">₹370</text>
+          <!-- Place order button -->
+          <rect x="22" y="338" width="176" height="44" rx="13" fill="#2D6A4F"/>
+          <text x="110" y="365" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="800" fill="white">Place Order ✓</text>
+          <text x="110" y="402" text-anchor="middle" font-family="system-ui" font-size="10" fill="#95D5B2" text-decoration="underline">Add more items</text>
+          <rect x="75" y="425" width="70" height="4" rx="2" fill="#111" opacity=".15"/>
+        </svg>
+        <div class="phone-tag">Cart</div>
+      </div>
+
+      <!-- PHONE 4: ORDER PLACED -->
+      <div class="phone-col">
+        <svg width="220" height="440" viewBox="0 0 220 440" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="216" height="436" rx="34" fill="#111"/>
+          <rect x="11" y="11" width="198" height="418" rx="26" fill="#fff"/>
+          <rect x="11" y="11" width="198" height="44" rx="26" fill="#2D6A4F"/>
+          <rect x="11" y="38" width="198" height="17" fill="#2D6A4F"/>
+          <rect x="74" y="11" width="72" height="20" rx="10" fill="#111"/>
+          <text x="30" y="28" font-family="system-ui" font-size="9" font-weight="600" fill="rgba(255,255,255,.7)">9:41</text>
+          <text x="110" y="36" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="800" fill="#fff">Order Status</text>
+          <!-- Big check circle -->
+          <circle cx="110" cy="110" r="38" fill="#D8F3DC"/>
+          <circle cx="110" cy="110" r="30" fill="#2D6A4F"/>
+          <text x="110" y="120" text-anchor="middle" font-family="system-ui" font-size="24" font-weight="900" fill="#fff">✓</text>
+          <text x="110" y="168" text-anchor="middle" font-family="system-ui" font-size="17" font-weight="900" fill="#1B4332">Order Placed! 🎉</text>
+          <text x="110" y="184" text-anchor="middle" font-family="system-ui" font-size="10" fill="#6B7B6B">WhatsApp sent to shop owner</text>
+          <!-- Order ID -->
+          <rect x="52" y="196" width="116" height="22" rx="6" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+          <text x="110" y="211" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="700" fill="#4E5E4E">ORD-20240715-001</text>
+          <!-- Status tracker -->
+          <text x="22" y="242" font-family="system-ui" font-size="10" font-weight="700" fill="#4E5E4E">Order Progress</text>
+          <!-- Track line -->
+          <line x1="36" y1="270" x2="194" y2="270" stroke="#DDE8DD" stroke-width="2"/>
+          <!-- Step dots -->
+          <circle cx="36" cy="270" r="8" fill="#2D6A4F"/>
+          <text x="36" y="274" text-anchor="middle" font-family="system-ui" font-size="8" font-weight="700" fill="#fff">✓</text>
+          <circle cx="84" cy="270" r="8" fill="#F4A261"/>
+          <text x="84" y="274" text-anchor="middle" font-family="system-ui" font-size="8" font-weight="700" fill="#fff">2</text>
+          <circle cx="146" cy="270" r="8" fill="#DDE8DD"/>
+          <text x="146" y="274" text-anchor="middle" font-family="system-ui" font-size="8" fill="#8A9A8A">3</text>
+          <circle cx="194" cy="270" r="8" fill="#DDE8DD"/>
+          <text x="194" y="274" text-anchor="middle" font-family="system-ui" font-size="8" fill="#8A9A8A">4</text>
+          <text x="36" y="288" text-anchor="middle" font-family="system-ui" font-size="8" font-weight="700" fill="#2D6A4F">Placed</text>
+          <text x="84" y="288" text-anchor="middle" font-family="system-ui" font-size="8" fill="#F4A261">Packing</text>
+          <text x="146" y="288" text-anchor="middle" font-family="system-ui" font-size="8" fill="#8A9A8A">Ready</text>
+          <text x="194" y="288" text-anchor="middle" font-family="system-ui" font-size="8" fill="#8A9A8A">Billed</text>
+          <!-- WA note -->
+          <rect x="22" y="302" width="176" height="46" rx="12" fill="#F0FFF4" stroke="#D8F3DC" stroke-width="1.5"/>
+          <text x="36" y="320" font-family="system-ui" font-size="10" font-weight="700" fill="#2D6A4F">📲 Shop owner notified</text>
+          <text x="36" y="335" font-family="system-ui" font-size="9" fill="#40916C">Item list sent to owner's WhatsApp.</text>
+          <text x="36" y="346" font-family="system-ui" font-size="9" fill="#40916C">You'll get notified when ready.</text>
+          <!-- Est time -->
+          <rect x="22" y="356" width="176" height="34" rx="10" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+          <text x="36" y="370" font-family="system-ui" font-size="10" fill="#6B7B6B">Estimated time</text>
+          <text x="200" y="378" text-anchor="end" font-family="system-ui" font-size="13" font-weight="900" fill="#2D6A4F">15–20 min</text>
+          <!-- Track button -->
+          <rect x="22" y="398" width="176" height="18" rx="0" fill="#fff"/>
+          <text x="110" y="410" text-anchor="middle" font-family="system-ui" font-size="10" fill="#2D6A4F" text-decoration="underline">View order details</text>
+          <rect x="75" y="425" width="70" height="4" rx="2" fill="#111" opacity=".15"/>
+        </svg>
+        <div class="phone-tag">Order Placed</div>
+      </div>
+
+      <!-- PHONE 5: BILL -->
+      <div class="phone-col">
+        <svg width="220" height="440" viewBox="0 0 220 440" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="216" height="436" rx="34" fill="#111"/>
+          <rect x="11" y="11" width="198" height="418" rx="26" fill="#fff"/>
+          <!-- Green gradient header -->
+          <rect x="11" y="11" width="198" height="78" rx="26" fill="#1B4332"/>
+          <rect x="11" y="60" width="198" height="29" fill="#1B4332"/>
+          <rect x="74" y="11" width="72" height="20" rx="10" fill="#111"/>
+          <text x="30" y="28" font-family="system-ui" font-size="9" font-weight="600" fill="rgba(255,255,255,.7)">9:41</text>
+          <circle cx="110" cy="60" r="20" fill="#2D6A4F"/>
+          <text x="110" y="66" text-anchor="middle" font-family="system-ui" font-size="18">🧾</text>
+          <text x="110" y="82" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="700" fill="#95D5B2">Bill Ready! ✅</text>
+          <!-- Bill card -->
+          <rect x="18" y="90" width="184" height="298" rx="14" fill="#fff" stroke="#DDE8DD" stroke-width="1" filter="drop-shadow(0 2px 8px rgba(0,0,0,.06))"/>
+          <text x="110" y="112" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="900" fill="#1B4332">FreshCart</text>
+          <text x="110" y="124" text-anchor="middle" font-family="system-ui" font-size="9" fill="#8A9A8A">Main Bazaar, Pune</text>
+          <line x1="30" y1="130" x2="190" y2="130" stroke="#E0EDE0" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="30" y="144" font-family="system-ui" font-size="9" fill="#8A9A8A">Bill No:</text>
+          <text x="190" y="144" text-anchor="end" font-family="system-ui" font-size="9" font-weight="700" fill="#4E5E4E">ORD-20240715-001</text>
+          <text x="30" y="156" font-family="system-ui" font-size="9" fill="#8A9A8A">Date:</text>
+          <text x="190" y="156" text-anchor="end" font-family="system-ui" font-size="9" fill="#4E5E4E">15 Jul 2024 3:45 PM</text>
+          <line x1="30" y1="163" x2="190" y2="163" stroke="#E0EDE0" stroke-width="1"/>
+          <!-- Bill header row -->
+          <text x="30" y="176" font-family="system-ui" font-size="9" font-weight="700" fill="#8A9A8A">ITEM</text>
+          <text x="120" y="176" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700" fill="#8A9A8A">QTY</text>
+          <text x="190" y="176" text-anchor="end" font-family="system-ui" font-size="9" font-weight="700" fill="#8A9A8A">AMT</text>
+          <!-- Items -->
+          <text x="30" y="192" font-family="system-ui" font-size="10" fill="#111">Tomatoes</text>
+          <text x="120" y="192" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6B7B6B">2 kg × ₹25</text>
+          <text x="190" y="192" text-anchor="end" font-family="system-ui" font-size="10" font-weight="700" fill="#111">₹50</text>
+          <text x="30" y="208" font-family="system-ui" font-size="10" fill="#111">Paneer 200g</text>
+          <text x="120" y="208" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6B7B6B">1 pc × ₹80</text>
+          <text x="190" y="208" text-anchor="end" font-family="system-ui" font-size="10" font-weight="700" fill="#111">₹80</text>
+          <text x="30" y="224" font-family="system-ui" font-size="10" fill="#111">Milk 1L</text>
+          <text x="120" y="224" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6B7B6B">2 L × ₹60</text>
+          <text x="190" y="224" text-anchor="end" font-family="system-ui" font-size="10" font-weight="700" fill="#111">₹120</text>
+          <text x="30" y="240" font-family="system-ui" font-size="10" fill="#111">Toor Dal</text>
+          <text x="120" y="240" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6B7B6B">1 kg × ₹120</text>
+          <text x="190" y="240" text-anchor="end" font-family="system-ui" font-size="10" font-weight="700" fill="#111">₹120</text>
+          <text x="30" y="256" font-family="system-ui" font-size="10" fill="#111">Coriander</text>
+          <text x="120" y="256" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6B7B6B">1 bunch × ₹10</text>
+          <text x="190" y="256" text-anchor="end" font-family="system-ui" font-size="10" font-weight="700" fill="#111">₹10</text>
+          <line x1="30" y1="264" x2="190" y2="264" stroke="#E0EDE0" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="30" y="280" font-family="system-ui" font-size="13" font-weight="900" fill="#1B4332">TOTAL</text>
+          <text x="190" y="280" text-anchor="end" font-family="system-ui" font-size="15" font-weight="900" fill="#1B4332">₹380</text>
+          <line x1="30" y1="288" x2="190" y2="288" stroke="#E0EDE0" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="110" y="308" text-anchor="middle" font-family="system-ui" font-size="9" fill="#8A9A8A">Thank you for shopping! 🙏</text>
+          <!-- Download button -->
+          <rect x="22" y="396" width="176" height="38" rx="12" fill="#2D6A4F"/>
+          <text x="110" y="420" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="700" fill="#fff">⬇ Download PDF Bill</text>
+          <rect x="75" y="426" width="70" height="4" rx="2" fill="#111" opacity=".15"/>
+        </svg>
+        <div class="phone-tag">Bill</div>
+      </div>
+
+    </div><!-- /phones -->
+  </div>
+</div><!-- /sec-dark -->
+
+<!-- ═══════════════════════════════════════════
+     ADMIN PANEL
+═══════════════════════════════════════════ -->
+<div class="sec-white">
+  <div class="inner">
+    <div class="eyebrow">Shop Owner</div>
+    <h2>Admin panel — live orders &amp; one-click billing</h2>
+    <p class="lead">Owner sees every order in real time, views the item list, and clicks <strong>Send Bill</strong> when packing is done. Bill PDF is generated and sent instantly.</p>
+    <div class="browser-wrap">
+      <div class="browser-bar">
+        <div class="brdot brdot-r"></div>
+        <div class="brdot brdot-y"></div>
+        <div class="brdot brdot-g"></div>
+        <div class="brloc">localhost:3000/admin/orders</div>
+      </div>
+      <!-- Admin SVG -->
+      <svg width="100%" viewBox="0 0 960 520" xmlns="http://www.w3.org/2000/svg" style="display:block">
+        <!-- Sidebar -->
+        <rect x="0" y="0" width="200" height="520" fill="#1B4332"/>
+        <text x="24" y="38" font-family="system-ui" font-size="16" font-weight="900" fill="#fff">🛒 FreshCart</text>
+        <text x="24" y="58" font-family="system-ui" font-size="9" fill="rgba(255,255,255,.45)">ADMIN PANEL</text>
+        <!-- Nav items -->
+        <rect x="12" y="72" width="176" height="36" rx="8" fill="rgba(255,255,255,.12)"/>
+        <text x="28" y="94" font-family="system-ui" font-size="13" font-weight="700" fill="#fff">📦  Live Orders</text>
+        <text x="28" y="142" font-family="system-ui" font-size="13" fill="rgba(255,255,255,.55)">📊  Dashboard</text>
+        <text x="28" y="182" font-family="system-ui" font-size="13" fill="rgba(255,255,255,.55)">🗂  Products</text>
+        <text x="28" y="222" font-family="system-ui" font-size="13" fill="rgba(255,255,255,.55)">📈  Reports</text>
+        <text x="28" y="262" font-family="system-ui" font-size="13" fill="rgba(255,255,255,.55)">⚙️  Settings</text>
+        <!-- Owner info at bottom -->
+        <rect x="12" y="480" width="176" height="32" rx="8" fill="rgba(255,255,255,.07)"/>
+        <circle cx="32" cy="496" r="10" fill="#52B788"/>
+        <text x="32" y="500" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="700" fill="#fff">S</text>
+        <text x="48" y="493" font-family="system-ui" font-size="11" font-weight="700" fill="#fff">Shop Owner</text>
+        <text x="48" y="505" font-family="system-ui" font-size="9" fill="rgba(255,255,255,.45)">Admin</text>
+
+        <!-- Main content -->
+        <rect x="200" y="0" width="760" height="520" fill="#F7F9F7"/>
+        <!-- Top bar -->
+        <rect x="200" y="0" width="760" height="52" fill="#fff"/>
+        <rect x="200" y="51" width="760" height="1" fill="#DDE8DD"/>
+        <text x="224" y="32" font-family="system-ui" font-size="18" font-weight="900" fill="#111A11">Live Orders</text>
+        <rect x="760" y="14" width="24" height="24" rx="6" fill="#F4A261" opacity=".2"/>
+        <text x="772" y="31" text-anchor="middle" font-size="14">🔔</text>
+        <!-- New orders badge -->
+        <circle cx="780" cy="14" r="7" fill="#E76F51"/>
+        <text x="780" y="18" text-anchor="middle" font-family="system-ui" font-size="8" font-weight="700" fill="#fff">3</text>
+        <rect x="796" y="12" width="100" height="28" rx="8" fill="#2D6A4F"/>
+        <text x="846" y="31" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="700" fill="#fff">↻ Refresh</text>
+
+        <!-- Stats row -->
+        <rect x="216" y="68" width="156" height="60" rx="10" fill="#fff" stroke="#DDE8DD" stroke-width="1"/>
+        <text x="232" y="88" font-family="system-ui" font-size="10" fill="#8A9A8A">New Orders</text>
+        <text x="232" y="114" font-family="system-ui" font-size="26" font-weight="900" fill="#2D6A4F">3</text>
+        <rect x="388" y="68" width="156" height="60" rx="10" fill="#fff" stroke="#DDE8DD" stroke-width="1"/>
+        <text x="404" y="88" font-family="system-ui" font-size="10" fill="#8A9A8A">Packing</text>
+        <text x="404" y="114" font-family="system-ui" font-size="26" font-weight="900" fill="#F4A261">1</text>
+        <rect x="560" y="68" width="156" height="60" rx="10" fill="#fff" stroke="#DDE8DD" stroke-width="1"/>
+        <text x="576" y="88" font-family="system-ui" font-size="10" fill="#8A9A8A">Billed Today</text>
+        <text x="576" y="114" font-family="system-ui" font-size="26" font-weight="900" fill="#1B4332">7</text>
+        <rect x="732" y="68" width="156" height="60" rx="10" fill="#fff" stroke="#DDE8DD" stroke-width="1"/>
+        <text x="748" y="88" font-family="system-ui" font-size="10" fill="#8A9A8A">Today Revenue</text>
+        <text x="748" y="114" font-family="system-ui" font-size="24" font-weight="900" fill="#1B4332">₹2,840</text>
+
+        <!-- ORDER CARD 1 (NEW / PLACED) -->
+        <rect x="216" y="146" width="226" height="200" rx="14" fill="#fff" stroke="#DDE8DD" stroke-width="1.5"/>
+        <!-- card header -->
+        <rect x="216" y="146" width="226" height="44" rx="14" fill="#1B4332"/>
+        <rect x="216" y="164" width="226" height="26" fill="#1B4332"/>
+        <text x="230" y="165" font-family="system-ui" font-size="11" font-weight="800" fill="#fff">ORD-001</text>
+        <rect x="344" y="152" width="50" height="18" rx="9" fill="#F4A261"/>
+        <text x="369" y="165" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700" fill="#fff">● PLACED</text>
+        <text x="230" y="180" font-family="system-ui" font-size="10" fill="rgba(255,255,255,.65)">📞 +91 99887 76655 · 3:45 PM</text>
+        <!-- items -->
+        <text x="230" y="208" font-family="system-ui" font-size="9" font-weight="700" fill="#8A9A8A">ITEMS</text>
+        <text x="230" y="224" font-family="system-ui" font-size="11" fill="#111">• Tomatoes — 2 kg</text>
+        <text x="230" y="240" font-family="system-ui" font-size="11" fill="#111">• Paneer 200g — 1 pc</text>
+        <text x="230" y="256" font-family="system-ui" font-size="11" fill="#111">• Milk 1L — 2 L</text>
+        <text x="230" y="272" font-family="system-ui" font-size="11" fill="#8A9A8A">+2 more items</text>
+        <line x1="230" y1="284" x2="428" y2="284" stroke="#DDE8DD" stroke-width="1"/>
+        <text x="230" y="300" font-family="system-ui" font-size="11" font-weight="700" fill="#1B4332">Total: ₹380</text>
+        <!-- Send Bill button -->
+        <rect x="320" y="316" width="108" height="22" rx="8" fill="#2D6A4F"/>
+        <text x="374" y="331" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="700" fill="#fff">✓ Send Bill</text>
+        <rect x="230" y="316" width="84" height="22" rx="8" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+        <text x="272" y="331" text-anchor="middle" font-family="system-ui" font-size="10" fill="#4E5E4E">Packing →</text>
+
+        <!-- ORDER CARD 2 (PACKING) -->
+        <rect x="458" y="146" width="226" height="200" rx="14" fill="#fff" stroke="#F4A261" stroke-width="1.5"/>
+        <rect x="458" y="146" width="226" height="44" rx="14" fill="#92400e"/>
+        <rect x="458" y="164" width="226" height="26" fill="#92400e"/>
+        <text x="472" y="165" font-family="system-ui" font-size="11" font-weight="800" fill="#fff">ORD-002</text>
+        <rect x="582" y="152" width="58" height="18" rx="9" fill="#F4A261"/>
+        <text x="611" y="165" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700" fill="#fff">◎ PACKING</text>
+        <text x="472" y="180" font-family="system-ui" font-size="10" fill="rgba(255,255,255,.65)">📞 +91 77665 54433 · 3:30 PM</text>
+        <text x="472" y="208" font-family="system-ui" font-size="9" font-weight="700" fill="#8A9A8A">ITEMS</text>
+        <text x="472" y="224" font-family="system-ui" font-size="11" fill="#111">• Toor Dal — 1 kg</text>
+        <text x="472" y="240" font-family="system-ui" font-size="11" fill="#111">• Amul Butter — 2 pc</text>
+        <text x="472" y="256" font-family="system-ui" font-size="11" fill="#111">• Coriander — 1 bunch</text>
+        <text x="472" y="272" font-family="system-ui" font-size="11" fill="#8A9A8A">+1 more item</text>
+        <line x1="472" y1="284" x2="670" y2="284" stroke="#DDE8DD" stroke-width="1"/>
+        <text x="472" y="300" font-family="system-ui" font-size="11" font-weight="700" fill="#1B4332">Total: ₹250</text>
+        <rect x="562" y="316" width="108" height="22" rx="8" fill="#2D6A4F"/>
+        <text x="616" y="331" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="700" fill="#fff">✓ Done — Send Bill</text>
+
+        <!-- ORDER CARD 3 (BILLED) -->
+        <rect x="700" y="146" width="226" height="200" rx="14" fill="#fff" stroke="#DDE8DD" stroke-width="1" opacity=".8"/>
+        <rect x="700" y="146" width="226" height="44" rx="14" fill="#374137"/>
+        <rect x="700" y="164" width="226" height="26" fill="#374137"/>
+        <text x="714" y="165" font-family="system-ui" font-size="11" font-weight="800" fill="rgba(255,255,255,.7)">ORD-003</text>
+        <rect x="820" y="152" width="52" height="18" rx="9" fill="rgba(82,183,136,.3)"/>
+        <text x="846" y="165" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700" fill="#95D5B2">● BILLED</text>
+        <text x="714" y="180" font-family="system-ui" font-size="10" fill="rgba(255,255,255,.4)">📞 +91 88776 65544 · 3:10 PM</text>
+        <text x="714" y="208" font-family="system-ui" font-size="9" font-weight="700" fill="#8A9A8A">ITEMS</text>
+        <text x="714" y="224" font-family="system-ui" font-size="11" fill="#8A9A8A">• Onion — 2 kg</text>
+        <text x="714" y="240" font-family="system-ui" font-size="11" fill="#8A9A8A">• Tomatoes — 1 kg</text>
+        <text x="714" y="256" font-family="system-ui" font-size="11" fill="#8A9A8A">• Potato — 3 kg</text>
+        <line x1="714" y1="284" x2="912" y2="284" stroke="#DDE8DD" stroke-width="1"/>
+        <text x="714" y="300" font-family="system-ui" font-size="11" font-weight="700" fill="#8A9A8A">Total: ₹140</text>
+        <rect x="714" y="314" width="176" height="24" rx="8" fill="#F7F9F7" stroke="#DDE8DD" stroke-width="1"/>
+        <text x="802" y="330" text-anchor="middle" font-family="system-ui" font-size="10" fill="#8A9A8A">✓ Bill sent to customer</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     TECH STACK
+═══════════════════════════════════════════ -->
+<div class="sec">
+  <div class="eyebrow">Technology</div>
+  <h2>Full tech stack</h2>
+  <p class="lead">Every layer chosen for simplicity, speed of development, and maintainability.</p>
+  <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;">
+    <table class="ttable">
+      <tr><th>Layer</th><th>Technology</th><th>Reason</th></tr>
+      <tr><td>Frontend</td><td>Next.js 14</td><td>Customer app + Admin panel in one project. App Router, middleware for route protection, SSR where needed.</td></tr>
+      <tr><td>Styling</td><td>Tailwind CSS + Shadcn/ui</td><td>Shadcn gives ready-made tables, dialogs, badges for admin. Tailwind for custom screens.</td></tr>
+      <tr><td>State</td><td>Zustand</td><td>Cart state + auth token management. Zero boilerplate, works perfectly with Next.js.</td></tr>
+      <tr><td>Backend</td><td>Python FastAPI</td><td>Async native, auto Swagger docs at <code>/docs</code>, Pydantic validation built-in. Best Python REST framework.</td></tr>
+      <tr><td>Database ODM</td><td>Beanie + Motor</td><td>Async MongoDB ODM. Pydantic models double as DB schemas — clean, type-safe, no boilerplate.</td></tr>
+      <tr><td>Database</td><td>MongoDB (Docker)</td><td>Runs as Docker container locally and on server. Replica set enabled for transactions. No cloud dependency.</td></tr>
+      <tr><td>Auth</td><td>python-jose + passlib</td><td>JWT access tokens (15 min) + refresh tokens (30 days). OTP hashed with bcrypt.</td></tr>
+      <tr><td>OTP / SMS</td><td>Twilio Verify API or 2factor.in</td><td>2factor.in is ₹0.15/SMS — ideal for India. Same API structure as Twilio.</td></tr>
+      <tr><td>WhatsApp</td><td>WATI.io or Twilio WhatsApp</td><td>Owner receives full item list on WhatsApp when order is placed. WATI has fast India approval.</td></tr>
+      <tr><td>Bill PDF</td><td>WeasyPrint + Jinja2</td><td>Design bill as HTML template → WeasyPrint converts to PDF. Full CSS support, easy to style.</td></tr>
+      <tr><td>Image Storage</td><td>Cloudinary</td><td>Product images + bill PDFs. Free tier 25 GB. CDN included. Direct upload from browser.</td></tr>
+      <tr><td>Deployment</td><td>Docker Compose</td><td>All services (FastAPI + MongoDB) in one compose file. Works on any Linux VPS or cloud VM.</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════
+     MONGODB DOCKER
+═══════════════════════════════════════════ -->
+<div class="sec-white">
+  <div class="inner">
+    <div class="eyebrow">Database Setup</div>
+    <h2>MongoDB — Docker image</h2>
+    <p class="lead">MongoDB runs as a Docker container with a replica set enabled. This unlocks multi-document transactions (needed for the checkout flow) without any cloud dependency.</p>
+    <div class="g2">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--gray);margin-bottom:8px;">docker-compose.yml</div>
+        <pre><code><span class="cm"># Full stack: FastAPI + MongoDB in Docker</span>
+version: <span class="st">'3.8'</span>
+
+services:
+
+  <span class="ky">mongodb</span>:
+    image: <span class="vl">mongo:7</span>
+    container_name: <span class="vl">freshcart-mongo</span>
+    restart: <span class="vl">unless-stopped</span>
+    ports:
+      - <span class="st">"27017:27017"</span>
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: <span class="vl">admin</span>
+      MONGO_INITDB_ROOT_PASSWORD: <span class="vl">freshcart123</span>
+      MONGO_INITDB_DATABASE: <span class="vl">freshcartdb</span>
+    <span class="cm"># replica set required for transactions</span>
+    command: <span class="st">--replSet rs0 --bind_ip_all</span>
+    volumes:
+      - <span class="vl">mongo_data:/data/db</span>
+      - <span class="vl">./mongo-init:/docker-entrypoint-initdb.d</span>
+    healthcheck:
+      test: <span class="st">["CMD","mongosh","--eval","db.adminCommand('ping')"]</span>
+      interval: <span class="vl">10s</span>
+      timeout: <span class="vl">5s</span>
+      retries: <span class="vl">5</span>
+
+  <span class="ky">mongo-rs-init</span>:
+    image: <span class="vl">mongo:7</span>
+    depends_on:
+      mongodb:
+        condition: <span class="vl">service_healthy</span>
+    restart: <span class="vl">no</span>
+    command: >
+      mongosh --host mongodb -u admin
+        -p freshcart123 --authenticationDatabase admin
+        --eval "rs.initiate({
+          _id: 'rs0',
+          members: [{_id:0, host:'mongodb:27017'}]
+        })"
+
+  <span class="ky">backend</span>:
+    build: <span class="vl">./backend</span>
+    container_name: <span class="vl">freshcart-api</span>
+    restart: <span class="vl">unless-stopped</span>
+    ports:
+      - <span class="st">"8000:8000"</span>
+    depends_on:
+      mongodb:
+        condition: <span class="vl">service_healthy</span>
+    env_file: <span class="vl">./backend/.env</span>
+    volumes:
+      - <span class="vl">./backend:/app</span>
+    command: >
+      uvicorn app.main:app
+        --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  mongo_data: <span class="cm"># persists data across restarts</span></code></pre>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--gray);margin-bottom:8px;">backend/.env</div>
+        <pre><code><span class="cm"># MongoDB — Docker container</span>
+<span class="ky">MONGODB_URI</span>=<span class="vl">mongodb://admin:freshcart123@mongodb:27017/freshcartdb?authSource=admin&replicaSet=rs0</span>
+<span class="ky">DB_NAME</span>=<span class="vl">freshcartdb</span>
+
+<span class="cm"># JWT</span>
+<span class="ky">JWT_SECRET</span>=<span class="vl">your-super-secret-key-change-me</span>
+<span class="ky">JWT_ALGORITHM</span>=<span class="vl">HS256</span>
+<span class="ky">ACCESS_TOKEN_EXPIRE_MINUTES</span>=<span class="vl">15</span>
+<span class="ky">REFRESH_TOKEN_EXPIRE_DAYS</span>=<span class="vl">30</span>
+
+<span class="cm"># OTP — SMS</span>
+<span class="ky">TWILIO_ACCOUNT_SID</span>=<span class="vl">ACxxxxxxxxxxxxxxxx</span>
+<span class="ky">TWILIO_AUTH_TOKEN</span>=<span class="vl">xxxxxxxxxxxxxxxx</span>
+<span class="ky">TWILIO_PHONE_NUMBER</span>=<span class="vl">+15551234567</span>
+
+<span class="cm"># WhatsApp to owner</span>
+<span class="ky">TWILIO_WHATSAPP_FROM</span>=<span class="vl">whatsapp:+14155238886</span>
+<span class="ky">OWNER_WHATSAPP</span>=<span class="vl">whatsapp:+919876543210</span>
+
+<span class="cm"># Cloudinary — images + bill PDFs</span>
+<span class="ky">CLOUDINARY_CLOUD_NAME</span>=<span class="vl">your_cloud</span>
+<span class="ky">CLOUDINARY_API_KEY</span>=<span class="vl">your_api_key</span>
+<span class="ky">CLOUDINARY_API_SECRET</span>=<span class="vl">your_secret</span>
+
+<span class="cm"># Frontend URL for CORS</span>
+<span class="ky">ALLOWED_ORIGINS</span>=<span class="vl">http://localhost:3000,https://yoursite.com</span></code></pre>
+
+        <div style="font-size:13px;font-weight:700;color:var(--gray);margin:20px 0 8px;">backend/Dockerfile</div>
+        <pre><code><span class="kw">FROM</span> <span class="vl">python:3.12-slim</span>
+
+<span class="cm"># WeasyPrint needs GTK libs</span>
+<span class="kw">RUN</span> apt-get update && apt-get install -y \
+    libpango-1.0-0 libpangoft2-1.0-0 \
+    libffi-dev libcairo2 libgdk-pixbuf2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> requirements.txt .
+<span class="kw">RUN</span> pip install --no-cache-dir -r requirements.txt
+<span class="kw">COPY</span> . .
+<span class="kw">EXPOSE</span> 8000
+<span class="kw">CMD</span> ["uvicorn","app.main:app","--host","0.0.0.0","--port","8000"]</code></pre>
+        <div style="background:#F0FFF4;border:1px solid #D8F3DC;border-radius:10px;padding:14px 16px;margin-top:14px;font-size:13px;color:#2D6A4F;">
+          <strong>▶ Start everything:</strong> <code style="background:#D8F3DC;color:#1B4332;">docker compose up -d</code><br>
+          <strong>▶ View API docs:</strong> <code style="background:#D8F3DC;color:#1B4332;">localhost:8000/docs</code><br>
+          <strong>▶ MongoDB shell:</strong> <code style="background:#D8F3DC;color:#1B4332;">docker exec -it freshcart-mongo mongosh</code>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     TIMELINE
+═══════════════════════════════════════════ -->
+<div class="sec-dark">
+  <div class="inner">
+    <div class="eyebrow">Delivery Plan</div>
+    <h2>6-phase roadmap</h2>
+    <p class="lead">Each phase delivers a working slice. You can review and test after every phase before the next begins.</p>
+    <div class="tl">
+      <div class="tli">
+        <div class="tld"></div>
+        <div class="tlph">Phase 1 <span class="tlw">2 weeks</span></div>
+        <div class="tlt">Foundation — Project Setup + OTP Auth</div>
+        <div class="tls">FastAPI + MongoDB (Docker) boilerplate. User and OTP collections. TTL index for auto-expiring OTPs. Twilio SMS integration. JWT issue + refresh. Next.js project + Tailwind + Shadcn. Login page with 6-digit OTP UI.</div>
+      </div>
+      <div class="tli">
+        <div class="tld"></div>
+        <div class="tlph">Phase 2 <span class="tlw">2 weeks</span></div>
+        <div class="tlt">Products + Cart</div>
+        <div class="tls">Product CRUD API. Cloudinary image uploads. Product listing page with category filter + search. Cart API with price snapshot logic. Cart sidebar with totals + quantity controls. Admin: product management page.</div>
+      </div>
+      <div class="tli">
+        <div class="tld"></div>
+        <div class="tlph">Phase 3 <span class="tlw">1.5 weeks</span></div>
+        <div class="tlt">Checkout → Order → WhatsApp to Owner</div>
+        <div class="tls">Checkout API inside MongoDB transaction (cart → order + stock decrement atomically). WhatsApp item list sent to owner on placement. Order confirmation screen. Live order status polling (every 8s) on customer app.</div>
+      </div>
+      <div class="tli">
+        <div class="tld"></div>
+        <div class="tlph">Phase 4 <span class="tlw">1.5 weeks</span></div>
+        <div class="tlt">Bill Generation + Customer Notification</div>
+        <div class="tls">Jinja2 bill HTML template. WeasyPrint converts to PDF. Cloudinary upload. PATCH /orders/{id}/ready marks order BILLED, generates bill, sends customer SMS/WhatsApp. Customer sees bill in app + download button.</div>
+      </div>
+      <div class="tli">
+        <div class="tld"></div>
+        <div class="tlph">Phase 5 <span class="tlw">1.5 weeks</span></div>
+        <div class="tlt">Admin Panel</div>
+        <div class="tls">Live orders board with auto-refresh. Order cards with item lists, status badges, "Packing" and "Send Bill" buttons. Dashboard with today's stats. Product management with add/edit/toggle. Category management.</div>
+      </div>
+      <div class="tli">
+        <div class="tld"></div>
+        <div class="tlph">Phase 6 <span class="tlw">1 week</span></div>
+        <div class="tlt">Polish + Deploy</div>
+        <div class="tls">Input validation, error handling, loading skeletons, mobile responsiveness. OTP rate limiting (max 3/hour per phone). Docker Compose production config. Deploy to Linux VPS — all services in one compose file. Final QA + handoff.</div>
+      </div>
+    </div>
+    <!-- Total estimate -->
+    <div style="background:rgba(244,162,97,.12);border:1px solid rgba(244,162,97,.3);border-radius:14px;padding:24px 28px;margin-top:16px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--a500);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">Total Timeline</div>
+        <div style="font-size:34px;font-weight:900;color:#fff;letter-spacing:-1px;">9–10 weeks</div>
+      </div>
+      <div style="flex:1;border-left:1px solid rgba(255,255,255,.12);padding-left:24px;">
+        <div style="color:var(--g200);font-size:13px;line-height:1.8;">One developer, full time. Each phase ends with a working, testable deliverable. Phase 1 can begin immediately after project kickoff. FastAPI auto-generates Swagger docs — no extra effort for API documentation.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<div class="footer">
+  <div style="font-size:32px;margin-bottom:12px;">🛒</div>
+  <h3>FreshCart — Ready to Build</h3>
+  <p>A production-ready grocery ordering platform with OTP login, WhatsApp notifications, and auto-generated bills. Built on a modern, maintainable stack that can be extended as your business grows.</p>
+  <div class="hero-pills" style="justify-content:center;display:flex;gap:10px;flex-wrap:wrap;margin-bottom:0;">
+    <span style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.7);padding:5px 14px;border-radius:6px;font-size:12px;">Next.js 14</span>
+    <span style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.7);padding:5px 14px;border-radius:6px;font-size:12px;">Python FastAPI</span>
+    <span style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.7);padding:5px 14px;border-radius:6px;font-size:12px;">MongoDB Docker</span>
+    <span style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.7);padding:5px 14px;border-radius:6px;font-size:12px;">WeasyPrint Bills</span>
+    <span style="background:rgba(244,162,97,.2);border:1px solid rgba(244,162,97,.4);color:var(--a500);padding:5px 14px;border-radius:6px;font-size:12px;font-weight:700;">WhatsApp Alerts</span>
+  </div>
+  <div class="footer-meta">Prepared for client review · FreshCart Grocery Platform · 2024</div>
+</div>
+
+</body>
+</html>

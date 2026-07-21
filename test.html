@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshCart — Client Proposal v2</title>
+    <style>
+        :root {
+            --g900: #1B4332;
+            --g800: #2D6A4F;
+            --g600: #40916C;
+            --g400: #52B788;
+            --g200: #95D5B2;
+            --g100: #D8F3DC;
+            --g50: #F0FFF4;
+            --a500: #F4A261;
+            --a700: #E76F51;
+            --a100: #fef3e2;
+            --b500: #3b82f6;
+            --b100: #dbeafe;
+            --r500: #ef4444;
+            --r100: #fee2e2;
+            --bg: #F7F9F7;
+            --white: #FFFFFF;
+            --dark: #111A11;
+            --gray: #4E5E4E;
+            --lgray: #8A9A8A;
+            --border: #DDE8DD;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(140deg, #0b1e12 0%, #1B4332 50%, #2D6A4F 100%);
+            padding: 80px 48px 88px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 55% 55% at 15% 55%, rgba(82, 183, 136, .2) 0, transparent 65%), radial-gradient(ellipse 35% 45% at 85% 25%, rgba(244, 162, 97, .13) 0, transparent 55%);
+            pointer-events: none;
+        }
+
+        .h-ey {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, .1);
+            border: 1px solid rgba(255, 255, 255, .18);
+            color: var(--g200);
+            padding: 5px 16px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-bottom: 26px;
+        }
+
+        .hero h1 {
+            font-size: 60px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: -2.5px;
+            line-height: 1.05;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 em {
+            color: var(--a500);
+            font-style: normal;
+        }
+
+        .hero-sub {
+            color: var(--g200);
+            font-size: 17px;
+            max-width: 520px;
+            margin: 0 auto 40px;
+            line-height: 1.75;
+        }
+
+        .h-pills {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            padding: 6px 16px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, .14);
+            color: rgba(255, 255, 255, .8);
+        }
+
+        .pill-a {
+            background: var(--a500);
+            border-color: var(--a500);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        /* SECTIONS */
+        .sec {
+            padding: 72px 48px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .sec-w {
+            background: var(--white);
+        }
+
+        .sec-w .inn {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 72px 48px;
+        }
+
+        .sec-d {
+            background: var(--g900);
+        }
+
+        .sec-d .inn {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 72px 48px;
+        }
+
+        .sec-g {
+            background: var(--g50);
+        }
+
+        .sec-g .inn {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 72px 48px;
+        }
+
+        .ey {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--g400);
+            margin-bottom: 10px;
+        }
+
+        .sec-d .ey {
+            color: var(--g200);
+        }
+
+        h2 {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -1.2px;
+            line-height: 1.15;
+            margin-bottom: 12px;
+            color: var(--dark);
+        }
+
+        .sec-d h2 {
+            color: #fff;
+        }
+
+        .lead {
+            color: var(--gray);
+            font-size: 15px;
+            max-width: 560px;
+            line-height: 1.75;
+            margin-bottom: 44px;
+        }
+
+        .sec-d .lead {
+            color: var(--g200);
+        }
+
+        /* CARDS */
+        .g3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .g2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+        }
+
+        @media(max-width:700px) {
+
+            .g3,
+            .g2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 16px;
+            padding: 26px;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 32px rgba(27, 67, 50, .1);
+        }
+
+        .ci {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            margin-bottom: 14px;
+        }
+
+        .ci-g {
+            background: var(--g100);
+        }
+
+        .ci-a {
+            background: var(--a100);
+        }
+
+        .ci-b {
+            background: var(--b100);
+        }
+
+        .ci-r {
+            background: var(--r100);
+        }
+
+        .card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        /* FLOW STEPS */
+        .steps {
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            margin-top: 8px;
+        }
+
+        .fst {
+            flex: 1;
+            min-width: 110px;
+            text-align: center;
+            position: relative;
+            padding: 0 4px;
+        }
+
+        .fst::after {
+            content: '';
+            position: absolute;
+            top: 19px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: var(--g100);
+            z-index: 0;
+        }
+
+        .fst:last-child::after {
+            display: none;
+        }
+
+        .fsn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 13px;
+            color: #fff;
+            margin: 0 auto 10px;
+            position: relative;
+            z-index: 1;
+            background: var(--g800);
+        }
+
+        .fsn.am {
+            background: var(--a500);
+        }
+
+        .fsn.bl {
+            background: var(--b500);
+        }
+
+        .fsl {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1.3;
+        }
+
+        .fss {
+            font-size: 10px;
+            color: var(--lgray);
+            margin-top: 2px;
+        }
+
+        /* PHONES */
+        .phone-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-top: 36px;
+        }
+
+        .phones-row {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .ph-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ph-tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--g200);
+            text-transform: uppercase;
+            letter-spacing: .8px;
+        }
+
+        .ph-row-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--g200);
+            text-align: center;
+            margin-bottom: 4px;
+            padding: 4px 16px;
+            background: rgba(255, 255, 255, .08);
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* ADMIN BROWSER */
+        .bwrap {
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 16px 56px rgba(27, 67, 50, .13);
+            margin-top: 20px;
+        }
+
+        .bbar {
+            background: #f0f2f0;
+            border-bottom: 1px solid var(--border);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bd {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .bdr {
+            background: #ff5f57;
+        }
+
+        .bdy {
+            background: #febc2e;
+        }
+
+        .bdg- {
+            background: #28c840;
+        }
+
+        .bloc {
+            flex: 1;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-size: 12px;
+            color: var(--lgray);
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        /* EMAIL MOCKUP */
+        .email-wrap {
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 12px 40px rgba(27, 67, 50, .1);
+        }
+
+        .email-client-bar {
+            background: #f5f5f5;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .email-meta {
+            padding: 20px 28px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .email-body {
+            padding: 28px;
+        }
+
+        /* TECH TABLE */
+        .tt {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .tt th {
+            background: var(--g900);
+            color: var(--g200);
+            text-align: left;
+            padding: 10px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .tt td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--gray);
+            vertical-align: top;
+        }
+
+        .tt td:first-child {
+            font-weight: 700;
+            color: var(--dark);
+            width: 130px;
+        }
+
+        .tt td:nth-child(2) {
+            color: var(--g800);
+            font-weight: 600;
+        }
+
+        .tt tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tt tr:nth-child(even) td {
+            background: var(--bg);
+        }
+
+        code {
+            background: var(--g100);
+            color: var(--g800);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 11px;
+        }
+
+        /* CODE */
+        pre {
+            background: #0b1a12;
+            color: #cde8d0;
+            padding: 20px 24px;
+            border-radius: 14px;
+            font-size: 12px;
+            line-height: 1.85;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            border: 1px solid rgba(82, 183, 136, .18);
+            margin: 14px 0;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+            font-size: inherit;
+        }
+
+        .ky {
+            color: #95d5b2;
+        }
+
+        .sv {
+            color: #74c69d;
+        }
+
+        .vl {
+            color: #f4a261;
+        }
+
+        .cm {
+            color: #4a7a5a;
+        }
+
+        .kw {
+            color: #a8d8b0;
+        }
+
+        /* TIMELINE */
+        .tl {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .tl::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            bottom: 10px;
+            width: 2px;
+            background: rgba(255, 255, 255, .12);
+        }
+
+        .tli {
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .tld {
+            position: absolute;
+            left: -23px;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--a500);
+            border: 3px solid var(--g900);
+        }
+
+        .tlp {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--a500);
+            text-transform: uppercase;
+            letter-spacing: .6px;
+        }
+
+        .tlt {
+            font-size: 17px;
+            font-weight: 800;
+            color: #fff;
+            margin: 3px 0 5px;
+            letter-spacing: -.3px;
+        }
+
+        .tls {
+            font-size: 13px;
+            color: var(--g200);
+            line-height: 1.65;
+        }
+
+        .tlw {
+            display: inline-block;
+            background: rgba(244, 162, 97, .15);
+            color: var(--a500);
+            padding: 1px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--g900);
+            text-align: center;
+            padding: 56px 48px;
+        }
+
+        .footer h3 {
+            font-size: 24px;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .footer p {
+            color: var(--g200);
+            font-size: 14px;
+            max-width: 480px;
+            margin: 0 auto 28px;
+            line-height: 1.7;
+        }
+
+        .footer-meta {
+            font-size: 12px;
+            color: var(--lgray);
+            border-top: 1px solid rgba(255, 255, 255, .07);
+            padding-top: 22px;
+            margin-top: 6px;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══ HERO ══════════════════════════════════════════ -->
+    <div class="hero">
+        <div class="h-ey">🛒 Client Proposal · 2024 · v2</div>
+        <h1>Fresh<em>Cart</em></h1>
+        <p class="hero-sub">Grocery ordering with OTP login, user profiles, real-time order tracking, WhatsApp packing
+            alerts, and PDF cash memo delivered to email.</p>
+        <div class="h-pills">
+            <span class="pill">Next.js 14</span>
+            <span class="pill">Python FastAPI</span>
+            <span class="pill">MongoDB Docker</span>
+            <span class="pill">User Profiles</span>
+            <span class="pill">Order Tracking</span>
+            <span class="pill-a">Email PDF Bill</span>
+        </div>
+    </div>
+
+    <!-- ══ OVERVIEW CARDS ════════════════════════════════ -->
+    <div class="sec">
+        <div class="ey">What's included</div>
+        <h2>Everything in one platform</h2>
+        <p class="lead">From phone OTP login to a full order tracking lifecycle — with admin acceptance, packing alerts,
+            and automated email billing.</p>
+        <div class="g3">
+            <div class="card">
+                <div class="ci ci-g">👤</div>
+                <h3>User Profile</h3>
+                <p>Name, email, phone. Customers set their email once — it's used for automatic PDF bill delivery. Order
+                    history and cart accessible from profile.</p>
+            </div>
+            <div class="card">
+                <div class="ci ci-a">✅</div>
+                <h3>Admin Accepts Order</h3>
+                <p>Admin sees new order in panel and clicks "Accept". Customer immediately sees "Request Accepted" on
+                    their order screen — no WhatsApp needed.</p>
+            </div>
+            <div class="card">
+                <div class="ci ci-g">📦</div>
+                <h3>Packing Done → SMS</h3>
+                <p>When admin marks packing done, an SMS goes to the customer: "Your order is ready — please come pick
+                    it up."</p>
+            </div>
+            <div class="card">
+                <div class="ci ci-b">📧</div>
+                <h3>Email PDF Cash Memo</h3>
+                <p>Admin clicks "Mark Delivered". System emails the full PDF cash memo (bill) to the customer's
+                    registered email address automatically.</p>
+            </div>
+            <div class="card">
+                <div class="ci ci-g">🛒</div>
+                <h3>Smart Cart</h3>
+                <p>Price-snapshotted cart. Customer can view cart from their profile. Each item shows price locked at
+                    time of adding, not live price.</p>
+            </div>
+            <div class="card">
+                <div class="ci ci-a">📊</div>
+                <h3>Admin Panel</h3>
+                <p>3-stage order management: Accept → Pack → Deliver. Revenue dashboard, product management, live order
+                    board.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ HOW IT WORKS ══════════════════════════════════ -->
+    <div class="sec-w">
+        <div class="inn">
+            <div class="ey">Complete Order Journey</div>
+            <h2>End-to-end flow</h2>
+            <p class="lead">Every step from login to PDF bill — what the customer sees, what the admin does.</p>
+            <div class="steps">
+                <div class="fst">
+                    <div class="fsn">1</div>
+                    <div class="fsl">OTP Login</div>
+                    <div class="fss">Phone number</div>
+                </div>
+                <div class="fst">
+                    <div class="fsn">2</div>
+                    <div class="fsl">Set Profile</div>
+                    <div class="fss">Name + Email</div>
+                </div>
+                <div class="fst">
+                    <div class="fsn">3</div>
+                    <div class="fsl">Add to Cart</div>
+                    <div class="fss">Browse products</div>
+                </div>
+                <div class="fst">
+                    <div class="fsn am">4</div>
+                    <div class="fsl">Place Order</div>
+                    <div class="fss">Customer done</div>
+                </div>
+                <div class="fst">
+                    <div class="fsn">5</div>
+                    <div class="fsl">Admin Accepts</div>
+                    <div class="fss">Request Accepted</div>
+                </div>
+                <div class="fst">
+                    <div class="fsn">6</div>
+                    <div class="fsl">Preparing</div>
+                    <div class="fss">Packing items</div>
+                </div>
+                <div class="fst">
+                    <div class="fsn am">7</div>
+                    <div class="fsl">SMS to Customer</div>
+                    <div class="fss">Pick up order</div>
+                </div>
+                <div class="fst">
+                    <div class="fsn bl">8</div>
+                    <div class="fsl">Mark Delivered</div>
+                    <div class="fss">Admin clicks done</div>
+                </div>
+                <div class="fst">
+                    <div class="fsn">9</div>
+                    <div class="fsl">Email PDF Bill</div>
+                    <div class="fss">Cash memo sent</div>
+                </div>
+            </div>
+
+            <!-- Order Status Lifecycle -->
+            <div
+                style="margin-top:40px;background:var(--bg);border:1.5px solid var(--border);border-radius:16px;padding:24px 28px;">
+                <div
+                    style="font-size:12px;font-weight:700;color:var(--lgray);text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px;">
+                    Order Status Lifecycle</div>
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                    <span
+                        style="background:var(--b100);color:#1e3a8f;padding:5px 14px;border-radius:8px;font-size:12px;font-weight:700;">●
+                        PLACED</span>
+                    <span style="color:var(--lgray)">→</span>
+                    <span
+                        style="background:var(--g100);color:var(--g800);padding:5px 14px;border-radius:8px;font-size:12px;font-weight:700;">●
+                        ACCEPTED</span>
+                    <span style="color:var(--lgray)">→</span>
+                    <span
+                        style="background:var(--a100);color:#c05c00;padding:5px 14px;border-radius:8px;font-size:12px;font-weight:700;">●
+                        PREPARING</span>
+                    <span style="color:var(--lgray)">→</span>
+                    <span
+                        style="background:#fef9c3;color:#854d0e;padding:5px 14px;border-radius:8px;font-size:12px;font-weight:700;">●
+                        PACKED</span>
+                    <span style="color:var(--lgray)">→</span>
+                    <span
+                        style="background:#d1fae5;color:#065f46;padding:5px 14px;border-radius:8px;font-size:12px;font-weight:700;">✓
+                        DELIVERED</span>
+                </div>
+                <div style="margin-top:16px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;font-size:12px;">
+                    <div style="color:var(--gray)"><strong style="color:var(--dark)">PLACED</strong><br>Customer clicks
+                        "Done"</div>
+                    <div style="color:var(--gray)"><strong style="color:var(--dark)">ACCEPTED</strong><br>Admin accepts
+                        in panel → in-app update</div>
+                    <div style="color:var(--gray)"><strong style="color:var(--dark)">PREPARING</strong><br>Admin starts
+                        packing</div>
+                    <div style="color:var(--gray)"><strong style="color:var(--dark)">PACKED</strong><br>SMS to customer:
+                        "Pick up your order"</div>
+                    <div style="color:var(--gray)"><strong style="color:var(--dark)">DELIVERED</strong><br>Admin clicks
+                        done → PDF emailed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ CUSTOMER SCREENS ══════════════════════════════ -->
+    <div class="sec-d">
+        <div class="inn">
+            <div class="ey">UI Design</div>
+            <h2>Customer app screens</h2>
+            <p class="lead">All screens the customer interacts with — from login to receiving the PDF bill via email.
+            </p>
+
+            <div class="phone-rows">
+                <!-- ROW 1 -->
+                <div style="text-align:center;margin-bottom:4px;">
+                    <span class="ph-row-label">Account &amp; Shopping</span>
+                </div>
+                <div class="phones-row">
+
+                    <!-- P1: LOGIN -->
+                    <div class="ph-col">
+                        <svg width="210" height="420" viewBox="0 0 210 420" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="206" height="416" rx="32" fill="#111" />
+                            <rect x="11" y="11" width="188" height="398" rx="24" fill="#fff" />
+                            <rect x="11" y="11" width="188" height="42" rx="24" fill="#1B4332" />
+                            <rect x="11" y="37" width="188" height="16" fill="#1B4332" />
+                            <rect x="70" y="11" width="70" height="20" rx="10" fill="#111" />
+                            <text x="26" y="27" font-family="system-ui" font-size="9"
+                                fill="rgba(255,255,255,.6)">9:41</text>
+                            <text x="167" y="27" font-family="system-ui" font-size="9"
+                                fill="rgba(255,255,255,.5)">●●▮</text>
+                            <!-- Logo -->
+                            <circle cx="105" cy="105" r="30" fill="#D8F3DC" />
+                            <text x="105" y="116" text-anchor="middle" font-size="24">🛒</text>
+                            <text x="105" y="154" text-anchor="middle" font-family="system-ui" font-size="18"
+                                font-weight="900" fill="#1B4332">FreshCart</text>
+                            <text x="105" y="170" text-anchor="middle" font-family="system-ui" font-size="10"
+                                fill="#8A9A8A">Your local grocery, online</text>
+                            <!-- Input -->
+                            <text x="22" y="200" font-family="system-ui" font-size="10" font-weight="700"
+                                fill="#4E5E4E">Phone Number</text>
+                            <rect x="22" y="207" width="166" height="32" rx="8" fill="#F7F9F7" stroke="#D8F3DC"
+                                stroke-width="1.5" />
+                            <rect x="24" y="209" width="34" height="28" rx="6" fill="#D8F3DC" />
+                            <text x="41" y="228" text-anchor="middle" font-family="system-ui" font-size="10"
+                                font-weight="700" fill="#2D6A4F">+91</text>
+                            <text x="115" y="228" text-anchor="middle" font-family="system-ui" font-size="10"
+                                fill="#b8c8b8">9XXXXXXXXX</text>
+                            <!-- Button -->
+                            <rect x="22" y="250" width="166" height="36" rx="10" fill="#2D6A4F" />
+                            <text x="105" y="273" text-anchor="middle" font-family="system-ui" font-size="12"
+                                font-weight="700" fill="#fff">Send OTP →</text>
+                            <!-- OTP boxes -->
+                            <text x="22" y="306" font-family="system-ui" font-size="9" font-weight="700"
+                                fill="#4E5E4E">Enter 6-digit OTP</text>
+                            <rect x="22" y="312" width="22" height="26" rx="6" fill="#F7F9F7" stroke="#2D6A4F"
+                                stroke-width="1.5" /><text x="33" y="329" text-anchor="middle" font-family="system-ui"
+                                font-size="13" font-weight="700" fill="#2D6A4F">4</text>
+                            <rect x="49" y="312" width="22" height="26" rx="6" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1.5" />
+                            <rect x="76" y="312" width="22" height="26" rx="6" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1.5" />
+                            <rect x="103" y="312" width="22" height="26" rx="6" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1.5" />
+                            <rect x="130" y="312" width="22" height="26" rx="6" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1.5" />
+                            <rect x="157" y="312" width="22" height="26" rx="6" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1.5" />
+                            <rect x="22" y="350" width="166" height="34" rx="10" fill="#52B788" />
+                            <text x="105" y="371" text-anchor="middle" font-family="system-ui" font-size="12"
+                                font-weight="700" fill="#fff">✓ Verify &amp; Login</text>
+                            <rect x="70" y="405" width="70" height="4" rx="2" fill="#111" opacity=".15" />
+                        </svg>
+                        <div class="ph-tag">Login</div>
+                    </div>
+
+                    <!-- P2: PROFILE -->
+                    <div class="ph-col">
+                        <svg width="210" height="420" viewBox="0 0 210 420" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="206" height="416" rx="32" fill="#111" />
+                            <rect x="11" y="11" width="188" height="398" rx="24" fill="#fff" />
+                            <rect x="11" y="11" width="188" height="100" rx="24" fill="#1B4332" />
+                            <rect x="11" y="78" width="188" height="33" fill="#1B4332" />
+                            <rect x="70" y="11" width="70" height="20" rx="10" fill="#111" />
+                            <text x="26" y="27" font-family="system-ui" font-size="9"
+                                fill="rgba(255,255,255,.6)">9:41</text>
+                            <text x="105" y="42" text-anchor="middle" font-family="system-ui" font-size="12"
+                                font-weight="800" fill="#fff">My Profile</text>
+                            <!-- Avatar -->
+                            <circle cx="105" cy="88" r="26" fill="#52B788" />
+                            <text x="105" y="97" text-anchor="middle" font-family="system-ui" font-size="20"
+                                font-weight="900" fill="#fff">R</text>
+                            <text x="105" y="128" text-anchor="middle" font-family="system-ui" font-size="13"
+                                font-weight="800" fill="#111">Rahul Sharma</text>
+                            <text x="105" y="142" text-anchor="middle" font-family="system-ui" font-size="10"
+                                fill="#8A9A8A">+91 99887 76655</text>
+                            <!-- Email row -->
+                            <rect x="18" y="152" width="174" height="32" rx="8" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <text x="30" y="165" font-family="system-ui" font-size="9" fill="#8A9A8A">Email (for
+                                bill)</text>
+                            <text x="30" y="177" font-family="system-ui" font-size="10" font-weight="600"
+                                fill="#2D6A4F">rahul@gmail.com</text>
+                            <text x="182" y="171" text-anchor="end" font-family="system-ui" font-size="12"
+                                fill="#52B788">✏</text>
+                            <!-- Section label -->
+                            <text x="22" y="202" font-family="system-ui" font-size="9" font-weight="700"
+                                fill="#8A9A8A">MY ACCOUNT</text>
+                            <!-- Menu item: Order History -->
+                            <rect x="18" y="210" width="174" height="38" rx="9" fill="#fff" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <text x="34" y="225" font-family="system-ui" font-size="14">📦</text>
+                            <text x="56" y="224" font-family="system-ui" font-size="12" font-weight="600"
+                                fill="#111">Order History</text>
+                            <text x="56" y="238" font-family="system-ui" font-size="9" fill="#8A9A8A">View all past
+                                orders</text>
+                            <text x="184" y="233" text-anchor="end" font-family="system-ui" font-size="14"
+                                fill="#b0c0b0">›</text>
+                            <!-- Menu item: Cart -->
+                            <rect x="18" y="253" width="174" height="38" rx="9" fill="#fff" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <text x="34" y="268" font-family="system-ui" font-size="14">🛒</text>
+                            <text x="56" y="267" font-family="system-ui" font-size="12" font-weight="600" fill="#111">My
+                                Cart</text>
+                            <text x="56" y="281" font-family="system-ui" font-size="9" fill="#8A9A8A">5 items in
+                                cart</text>
+                            <text x="184" y="276" text-anchor="end" font-family="system-ui" font-size="14"
+                                fill="#b0c0b0">›</text>
+                            <circle cx="172" cy="257" r="8" fill="#F4A261" />
+                            <text x="172" y="261" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#fff">5</text>
+                            <!-- Menu item: Notifications -->
+                            <rect x="18" y="296" width="174" height="38" rx="9" fill="#fff" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <text x="34" y="311" font-family="system-ui" font-size="14">🔔</text>
+                            <text x="56" y="310" font-family="system-ui" font-size="12" font-weight="600"
+                                fill="#111">Notifications</text>
+                            <text x="56" y="324" font-family="system-ui" font-size="9" fill="#8A9A8A">Order alerts,
+                                SMS</text>
+                            <text x="184" y="319" text-anchor="end" font-family="system-ui" font-size="14"
+                                fill="#b0c0b0">›</text>
+                            <!-- Divider -->
+                            <line x1="18" y1="344" x2="192" y2="344" stroke="#DDE8DD" stroke-width="1" />
+                            <!-- Logout -->
+                            <rect x="18" y="352" width="174" height="36" rx="9" fill="#fee2e2" stroke="#fca5a5"
+                                stroke-width="1" />
+                            <text x="105" y="374" text-anchor="middle" font-family="system-ui" font-size="12"
+                                font-weight="700" fill="#dc2626">🚪 Logout</text>
+                            <rect x="70" y="405" width="70" height="4" rx="2" fill="#111" opacity=".15" />
+                        </svg>
+                        <div class="ph-tag">Profile</div>
+                    </div>
+
+                    <!-- P3: PRODUCTS -->
+                    <div class="ph-col">
+                        <svg width="210" height="420" viewBox="0 0 210 420" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="206" height="416" rx="32" fill="#111" />
+                            <rect x="11" y="11" width="188" height="398" rx="24" fill="#fff" />
+                            <rect x="11" y="11" width="188" height="74" rx="24" fill="#2D6A4F" />
+                            <rect x="11" y="60" width="188" height="25" fill="#2D6A4F" />
+                            <rect x="70" y="11" width="70" height="20" rx="10" fill="#111" />
+                            <text x="26" y="27" font-family="system-ui" font-size="9"
+                                fill="rgba(255,255,255,.6)">9:41</text>
+                            <text x="105" y="45" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="800" fill="#fff">👋 Good morning!</text>
+                            <!-- Search -->
+                            <rect x="20" y="56" width="150" height="26" rx="7" fill="rgba(255,255,255,.18)" />
+                            <text x="34" y="73" font-family="system-ui" font-size="11" fill="rgba(255,255,255,.7)">🔍
+                                Search…</text>
+                            <!-- Profile icon -->
+                            <circle cx="180" cy="69" r="13" fill="#52B788" />
+                            <text x="180" y="74" text-anchor="middle" font-family="system-ui" font-size="10"
+                                font-weight="700" fill="#fff">R</text>
+                            <!-- Categories -->
+                            <rect x="20" y="88" width="28" height="17" rx="8" fill="#2D6A4F" />
+                            <text x="34" y="100" text-anchor="middle" font-family="system-ui" font-size="8"
+                                font-weight="700" fill="#fff">All</text>
+                            <rect x="52" y="88" width="48" height="17" rx="8" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <text x="76" y="100" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#4E5E4E">🥬 Veggies</text>
+                            <rect x="104" y="88" width="38" height="17" rx="8" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <text x="123" y="100" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#4E5E4E">🥛 Dairy</text>
+                            <rect x="146" y="88" width="38" height="17" rx="8" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <text x="165" y="100" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#4E5E4E">🌾 Grains</text>
+                            <text x="20" y="122" font-family="system-ui" font-size="11" font-weight="800"
+                                fill="#111">Products</text>
+                            <!-- Product grid 2x3 -->
+                            <rect x="20" y="130" width="78" height="76" rx="9" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <rect x="30" y="136" width="58" height="40" rx="6" fill="#fee2e2" />
+                            <text x="59" y="160" text-anchor="middle" font-size="20">🍅</text>
+                            <text x="59" y="192" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#111">Tomatoes</text>
+                            <text x="59" y="203" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">₹25/kg</text>
+                            <rect x="80" y="194" width="16" height="16" rx="4" fill="#2D6A4F" />
+                            <text x="88" y="205" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="700" fill="#fff">+</text>
+                            <rect x="111" y="130" width="78" height="76" rx="9" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <rect x="121" y="136" width="58" height="40" rx="6" fill="#dbeafe" />
+                            <text x="150" y="160" text-anchor="middle" font-size="20">🥛</text>
+                            <text x="150" y="192" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#111">Milk 1L</text>
+                            <text x="150" y="203" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">₹60/L</text>
+                            <rect x="171" y="194" width="16" height="16" rx="4" fill="#2D6A4F" />
+                            <text x="179" y="205" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="700" fill="#fff">+</text>
+                            <rect x="20" y="212" width="78" height="76" rx="9" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <rect x="30" y="218" width="58" height="40" rx="6" fill="#fef9c3" />
+                            <text x="59" y="242" text-anchor="middle" font-size="20">🧀</text>
+                            <text x="59" y="274" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#111">Paneer</text>
+                            <text x="59" y="285" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">₹80/200g</text>
+                            <rect x="80" y="276" width="16" height="16" rx="4" fill="#2D6A4F" />
+                            <text x="88" y="287" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="700" fill="#fff">+</text>
+                            <rect x="111" y="212" width="78" height="76" rx="9" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <rect x="121" y="218" width="58" height="40" rx="6" fill="#fce7f3" />
+                            <text x="150" y="242" text-anchor="middle" font-size="20">🧅</text>
+                            <text x="150" y="274" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#111">Onion</text>
+                            <text x="150" y="285" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">₹30/kg</text>
+                            <rect x="171" y="276" width="16" height="16" rx="4" fill="#2D6A4F" />
+                            <text x="179" y="287" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="700" fill="#fff">+</text>
+                            <rect x="20" y="294" width="78" height="76" rx="9" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <rect x="30" y="300" width="58" height="40" rx="6" fill="#fef3e2" />
+                            <text x="59" y="324" text-anchor="middle" font-size="20">🌾</text>
+                            <text x="59" y="356" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#111">Toor Dal</text>
+                            <text x="59" y="367" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">₹120/kg</text>
+                            <rect x="80" y="358" width="16" height="16" rx="4" fill="#2D6A4F" />
+                            <text x="88" y="369" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="700" fill="#fff">+</text>
+                            <rect x="111" y="294" width="78" height="76" rx="9" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <rect x="121" y="300" width="58" height="40" rx="6" fill="#d1fae5" />
+                            <text x="150" y="324" text-anchor="middle" font-size="20">🌿</text>
+                            <text x="150" y="356" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#111">Coriander</text>
+                            <text x="150" y="367" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">₹10/bunch</text>
+                            <rect x="171" y="358" width="16" height="16" rx="4" fill="#2D6A4F" />
+                            <text x="179" y="369" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="700" fill="#fff">+</text>
+                            <!-- Cart FAB -->
+                            <circle cx="167" cy="388" r="16" fill="#2D6A4F" />
+                            <text x="167" y="393" text-anchor="middle" font-size="14">🛒</text>
+                            <circle cx="178" cy="376" r="7" fill="#F4A261" />
+                            <text x="178" y="380" text-anchor="middle" font-family="system-ui" font-size="8"
+                                font-weight="700" fill="#fff">5</text>
+                            <rect x="70" y="405" width="70" height="4" rx="2" fill="#111" opacity=".15" />
+                        </svg>
+                        <div class="ph-tag">Products</div>
+                    </div>
+
+                    <!-- P4: CART -->
+                    <div class="ph-col">
+                        <svg width="210" height="420" viewBox="0 0 210 420" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="206" height="416" rx="32" fill="#111" />
+                            <rect x="11" y="11" width="188" height="398" rx="24" fill="#fff" />
+                            <rect x="11" y="11" width="188" height="42" rx="24" fill="#2D6A4F" />
+                            <rect x="11" y="37" width="188" height="16" fill="#2D6A4F" />
+                            <rect x="70" y="11" width="70" height="20" rx="10" fill="#111" />
+                            <text x="26" y="27" font-family="system-ui" font-size="9"
+                                fill="rgba(255,255,255,.6)">9:41</text>
+                            <text x="105" y="33" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="800" fill="#fff">🛒 My Cart</text>
+                            <rect x="154" y="21" width="40" height="16" rx="8" fill="rgba(244,162,97,.35)" />
+                            <text x="174" y="33" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#F4A261">5 items</text>
+                            <!-- Items -->
+                            <rect x="16" y="55" width="36" height="36" rx="7" fill="#fee2e2" />
+                            <text x="34" y="78" text-anchor="middle" font-size="18">🍅</text>
+                            <text x="60" y="67" font-family="system-ui" font-size="11" font-weight="700"
+                                fill="#111">Tomatoes</text>
+                            <text x="60" y="79" font-family="system-ui" font-size="9" fill="#8A9A8A">₹25/kg</text>
+                            <rect x="140" y="57" width="14" height="14" rx="4" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" /><text x="147" y="68" text-anchor="middle" font-family="system-ui"
+                                font-size="10" fill="#6B7B6B">−</text>
+                            <text x="162" y="68" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="700" fill="#111">2</text>
+                            <rect x="173" y="57" width="14" height="14" rx="4" fill="#2D6A4F" /><text x="180" y="68"
+                                text-anchor="middle" font-family="system-ui" font-size="10" font-weight="700"
+                                fill="#fff">+</text>
+                            <text x="190" y="81" text-anchor="end" font-family="system-ui" font-size="10"
+                                font-weight="700" fill="#2D6A4F">₹50</text>
+                            <line x1="16" y1="97" x2="194" y2="97" stroke="#F0F4F0" stroke-width="1" />
+                            <rect x="16" y="103" width="36" height="36" rx="7" fill="#fef9c3" />
+                            <text x="34" y="126" text-anchor="middle" font-size="18">🧀</text>
+                            <text x="60" y="115" font-family="system-ui" font-size="11" font-weight="700"
+                                fill="#111">Paneer 200g</text>
+                            <text x="60" y="127" font-family="system-ui" font-size="9" fill="#8A9A8A">₹80/pc</text>
+                            <rect x="140" y="105" width="14" height="14" rx="4" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" /><text x="147" y="116" text-anchor="middle" font-family="system-ui"
+                                font-size="10" fill="#6B7B6B">−</text>
+                            <text x="162" y="116" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="700" fill="#111">1</text>
+                            <rect x="173" y="105" width="14" height="14" rx="4" fill="#2D6A4F" /><text x="180" y="116"
+                                text-anchor="middle" font-family="system-ui" font-size="10" font-weight="700"
+                                fill="#fff">+</text>
+                            <text x="190" y="129" text-anchor="end" font-family="system-ui" font-size="10"
+                                font-weight="700" fill="#2D6A4F">₹80</text>
+                            <line x1="16" y1="145" x2="194" y2="145" stroke="#F0F4F0" stroke-width="1" />
+                            <rect x="16" y="151" width="36" height="36" rx="7" fill="#dbeafe" />
+                            <text x="34" y="174" text-anchor="middle" font-size="18">🥛</text>
+                            <text x="60" y="163" font-family="system-ui" font-size="11" font-weight="700"
+                                fill="#111">Milk 1L</text>
+                            <text x="60" y="175" font-family="system-ui" font-size="9" fill="#8A9A8A">₹60/L</text>
+                            <rect x="140" y="153" width="14" height="14" rx="4" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" /><text x="147" y="164" text-anchor="middle" font-family="system-ui"
+                                font-size="10" fill="#6B7B6B">−</text>
+                            <text x="162" y="164" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="700" fill="#111">2</text>
+                            <rect x="173" y="153" width="14" height="14" rx="4" fill="#2D6A4F" /><text x="180" y="164"
+                                text-anchor="middle" font-family="system-ui" font-size="10" font-weight="700"
+                                fill="#fff">+</text>
+                            <text x="190" y="177" text-anchor="end" font-family="system-ui" font-size="10"
+                                font-weight="700" fill="#2D6A4F">₹120</text>
+                            <line x1="16" y1="193" x2="194" y2="193" stroke="#F0F4F0" stroke-width="1" />
+                            <rect x="16" y="199" width="36" height="36" rx="7" fill="#fef3e2" />
+                            <text x="34" y="222" text-anchor="middle" font-size="18">🌾</text>
+                            <text x="60" y="211" font-family="system-ui" font-size="11" font-weight="700"
+                                fill="#111">Toor Dal 1kg</text>
+                            <text x="60" y="223" font-family="system-ui" font-size="9" fill="#8A9A8A">₹120/kg</text>
+                            <rect x="140" y="201" width="14" height="14" rx="4" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" /><text x="147" y="212" text-anchor="middle" font-family="system-ui"
+                                font-size="10" fill="#6B7B6B">−</text>
+                            <text x="162" y="212" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="700" fill="#111">1</text>
+                            <rect x="173" y="201" width="14" height="14" rx="4" fill="#2D6A4F" /><text x="180" y="212"
+                                text-anchor="middle" font-family="system-ui" font-size="10" font-weight="700"
+                                fill="#fff">+</text>
+                            <text x="190" y="225" text-anchor="end" font-family="system-ui" font-size="10"
+                                font-weight="700" fill="#2D6A4F">₹120</text>
+                            <!-- Summary -->
+                            <rect x="16" y="246" width="178" height="56" rx="10" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <text x="28" y="264" font-family="system-ui" font-size="10" fill="#8A9A8A">Subtotal (5
+                                items)</text>
+                            <text x="190" y="264" text-anchor="end" font-family="system-ui" font-size="10"
+                                fill="#4E5E4E">₹370</text>
+                            <line x1="28" y1="272" x2="190" y2="272" stroke="#DDE8DD" stroke-width="1" />
+                            <text x="28" y="290" font-family="system-ui" font-size="13" font-weight="900"
+                                fill="#111">TOTAL</text>
+                            <text x="190" y="290" text-anchor="end" font-family="system-ui" font-size="14"
+                                font-weight="900" fill="#2D6A4F">₹370</text>
+                            <!-- Button -->
+                            <rect x="16" y="312" width="178" height="40" rx="12" fill="#2D6A4F" />
+                            <text x="105" y="336" text-anchor="middle" font-family="system-ui" font-size="13"
+                                font-weight="800" fill="#fff">Place Order ✓</text>
+                            <text x="105" y="374" text-anchor="middle" font-family="system-ui" font-size="10"
+                                fill="#95D5B2" text-decoration="underline">Continue shopping</text>
+                            <rect x="70" y="405" width="70" height="4" rx="2" fill="#111" opacity=".15" />
+                        </svg>
+                        <div class="ph-tag">Cart</div>
+                    </div>
+
+                </div><!-- /row 1 -->
+
+                <!-- ROW 2: ORDER STATUS SCREENS -->
+                <div style="text-align:center;margin-bottom:4px;">
+                    <span class="ph-row-label">Order Tracking Journey</span>
+                </div>
+                <div class="phones-row">
+
+                    <!-- P5: ORDER PLACED -->
+                    <div class="ph-col">
+                        <svg width="210" height="420" viewBox="0 0 210 420" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="206" height="416" rx="32" fill="#111" />
+                            <rect x="11" y="11" width="188" height="398" rx="24" fill="#fff" />
+                            <rect x="11" y="11" width="188" height="42" rx="24" fill="#2D6A4F" />
+                            <rect x="11" y="37" width="188" height="16" fill="#2D6A4F" />
+                            <rect x="70" y="11" width="70" height="20" rx="10" fill="#111" />
+                            <text x="26" y="27" font-family="system-ui" font-size="9"
+                                fill="rgba(255,255,255,.6)">9:41</text>
+                            <text x="105" y="33" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="800" fill="#fff">Order Status</text>
+                            <!-- Status dots row - 5 steps -->
+                            <line x1="32" y1="72" x2="178" y2="72" stroke="#E0EDE0" stroke-width="2" />
+                            <circle cx="32" cy="72" r="8" fill="#1e3a8f" />
+                            <text x="32" y="76" text-anchor="middle" font-family="system-ui" font-size="8"
+                                font-weight="700" fill="#fff">1</text>
+                            <circle cx="68" cy="72" r="8" fill="#DDE8DD" />
+                            <text x="68" y="76" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">2</text>
+                            <circle cx="105" cy="72" r="8" fill="#DDE8DD" />
+                            <text x="105" y="76" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">3</text>
+                            <circle cx="142" cy="72" r="8" fill="#DDE8DD" />
+                            <text x="142" y="76" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">4</text>
+                            <circle cx="178" cy="72" r="8" fill="#DDE8DD" />
+                            <text x="178" y="76" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">5</text>
+                            <text x="32" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                font-weight="700" fill="#1e3a8f">Placed</text>
+                            <text x="68" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                fill="#8A9A8A">Accepted</text>
+                            <text x="105" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                fill="#8A9A8A">Preparing</text>
+                            <text x="142" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                fill="#8A9A8A">Packed</text>
+                            <text x="178" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                fill="#8A9A8A">Done</text>
+                            <!-- Icon + message -->
+                            <circle cx="105" cy="150" r="36" fill="#dbeafe" />
+                            <text x="105" y="163" text-anchor="middle" font-size="30">📋</text>
+                            <text x="105" y="206" text-anchor="middle" font-family="system-ui" font-size="15"
+                                font-weight="900" fill="#1e3a8f">Order Sent!</text>
+                            <text x="105" y="222" text-anchor="middle" font-family="system-ui" font-size="10"
+                                fill="#6B7B6B">Waiting for shop to accept</text>
+                            <rect x="52" y="234" width="106" height="20" rx="6" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <text x="105" y="248" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#4E5E4E">ORD-20240715-001</text>
+                            <!-- Order summary mini -->
+                            <rect x="18" y="266" width="174" height="90" rx="10" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <text x="30" y="283" font-family="system-ui" font-size="9" font-weight="700"
+                                fill="#8A9A8A">YOUR ORDER</text>
+                            <text x="30" y="299" font-family="system-ui" font-size="10" fill="#111">Tomatoes ×
+                                2kg</text>
+                            <text x="185" y="299" text-anchor="end" font-family="system-ui" font-size="10"
+                                font-weight="700" fill="#2D6A4F">₹50</text>
+                            <text x="30" y="315" font-family="system-ui" font-size="10" fill="#111">Paneer 200g ×
+                                1</text>
+                            <text x="185" y="315" text-anchor="end" font-family="system-ui" font-size="10"
+                                font-weight="700" fill="#2D6A4F">₹80</text>
+                            <text x="30" y="331" font-family="system-ui" font-size="10" fill="#8A9A8A">+3 more
+                                items…</text>
+                            <line x1="30" y1="340" x2="182" y2="340" stroke="#DDE8DD" stroke-width="1" />
+                            <text x="30" y="353" font-family="system-ui" font-size="11" font-weight="800"
+                                fill="#111">Total</text>
+                            <text x="185" y="353" text-anchor="end" font-family="system-ui" font-size="12"
+                                font-weight="900" fill="#1B4332">₹370</text>
+                            <rect x="70" y="405" width="70" height="4" rx="2" fill="#111" opacity=".15" />
+                        </svg>
+                        <div class="ph-tag">Order Placed</div>
+                    </div>
+
+                    <!-- P6: REQUEST ACCEPTED -->
+                    <div class="ph-col">
+                        <svg width="210" height="420" viewBox="0 0 210 420" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="206" height="416" rx="32" fill="#111" />
+                            <rect x="11" y="11" width="188" height="398" rx="24" fill="#fff" />
+                            <rect x="11" y="11" width="188" height="42" rx="24" fill="#2D6A4F" />
+                            <rect x="11" y="37" width="188" height="16" fill="#2D6A4F" />
+                            <rect x="70" y="11" width="70" height="20" rx="10" fill="#111" />
+                            <text x="26" y="27" font-family="system-ui" font-size="9"
+                                fill="rgba(255,255,255,.6)">9:41</text>
+                            <text x="105" y="33" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="800" fill="#fff">Order Status</text>
+                            <!-- Status dots - 2 filled -->
+                            <line x1="32" y1="72" x2="178" y2="72" stroke="#E0EDE0" stroke-width="2" />
+                            <line x1="32" y1="72" x2="68" y2="72" stroke="#2D6A4F" stroke-width="2" />
+                            <circle cx="32" cy="72" r="8" fill="#2D6A4F" />
+                            <text x="32" y="76" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#fff">✓</text>
+                            <circle cx="68" cy="72" r="8" fill="#2D6A4F" />
+                            <text x="68" y="76" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#fff">✓</text>
+                            <circle cx="105" cy="72" r="8" fill="#DDE8DD" />
+                            <text x="105" y="76" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">3</text>
+                            <circle cx="142" cy="72" r="8" fill="#DDE8DD" />
+                            <text x="142" y="76" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">4</text>
+                            <circle cx="178" cy="72" r="8" fill="#DDE8DD" />
+                            <text x="178" y="76" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">5</text>
+                            <text x="32" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                font-weight="700" fill="#2D6A4F">Placed</text>
+                            <text x="68" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                font-weight="700" fill="#2D6A4F">Accepted</text>
+                            <text x="105" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                fill="#8A9A8A">Preparing</text>
+                            <text x="142" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                fill="#8A9A8A">Packed</text>
+                            <text x="178" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                fill="#8A9A8A">Done</text>
+                            <!-- Main content -->
+                            <circle cx="105" cy="150" r="36" fill="#D8F3DC" />
+                            <circle cx="105" cy="150" r="28" fill="#2D6A4F" />
+                            <text x="105" y="158" text-anchor="middle" font-family="system-ui" font-size="22"
+                                font-weight="900" fill="#fff">✓</text>
+                            <text x="105" y="206" text-anchor="middle" font-family="system-ui" font-size="15"
+                                font-weight="900" fill="#1B4332">Request Accepted! 🎉</text>
+                            <text x="105" y="222" text-anchor="middle" font-family="system-ui" font-size="10"
+                                fill="#6B7B6B">Shop owner accepted your order</text>
+                            <!-- Notification card -->
+                            <rect x="18" y="236" width="174" height="50" rx="12" fill="#F0FFF4" stroke="#D8F3DC"
+                                stroke-width="1.5" />
+                            <text x="34" y="255" font-family="system-ui" font-size="10" font-weight="700"
+                                fill="#2D6A4F">✅ Confirmed by shop</text>
+                            <text x="34" y="271" font-family="system-ui" font-size="9" fill="#40916C">Your items are
+                                being prepared now.</text>
+                            <text x="34" y="283" font-family="system-ui" font-size="9" fill="#40916C">We'll notify when
+                                packing is done.</text>
+                            <!-- Est time -->
+                            <rect x="18" y="296" width="174" height="32" rx="9" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <text x="30" y="310" font-family="system-ui" font-size="9" fill="#8A9A8A">Accepted at</text>
+                            <text x="30" y="322" font-family="system-ui" font-size="11" font-weight="700"
+                                fill="#111">3:47 PM · 15 Jul</text>
+                            <text x="185" y="316" text-anchor="end" font-family="system-ui" font-size="10"
+                                font-weight="700" fill="#2D6A4F">~15 min</text>
+                            <rect x="70" y="405" width="70" height="4" rx="2" fill="#111" opacity=".15" />
+                        </svg>
+                        <div class="ph-tag">Accepted</div>
+                    </div>
+
+                    <!-- P7: PREPARING -->
+                    <div class="ph-col">
+                        <svg width="210" height="420" viewBox="0 0 210 420" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="206" height="416" rx="32" fill="#111" />
+                            <rect x="11" y="11" width="188" height="398" rx="24" fill="#fff" />
+                            <rect x="11" y="11" width="188" height="42" rx="24" fill="#92400e" />
+                            <rect x="11" y="37" width="188" height="16" fill="#92400e" />
+                            <rect x="70" y="11" width="70" height="20" rx="10" fill="#111" />
+                            <text x="26" y="27" font-family="system-ui" font-size="9"
+                                fill="rgba(255,255,255,.6)">9:41</text>
+                            <text x="105" y="33" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="800" fill="#fff">Order Status</text>
+                            <!-- Status dots - 3 filled -->
+                            <line x1="32" y1="72" x2="178" y2="72" stroke="#E0EDE0" stroke-width="2" />
+                            <line x1="32" y1="72" x2="105" y2="72" stroke="#F4A261" stroke-width="2" />
+                            <circle cx="32" cy="72" r="8" fill="#2D6A4F" />
+                            <text x="32" y="76" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#fff">✓</text>
+                            <circle cx="68" cy="72" r="8" fill="#2D6A4F" />
+                            <text x="68" y="76" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#fff">✓</text>
+                            <circle cx="105" cy="72" r="8" fill="#F4A261" />
+                            <text x="105" y="76" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#fff">…</text>
+                            <circle cx="142" cy="72" r="8" fill="#DDE8DD" />
+                            <text x="142" y="76" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">4</text>
+                            <circle cx="178" cy="72" r="8" fill="#DDE8DD" />
+                            <text x="178" y="76" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">5</text>
+                            <text x="32" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                font-weight="700" fill="#2D6A4F">Placed</text>
+                            <text x="68" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                font-weight="700" fill="#2D6A4F">Accepted</text>
+                            <text x="105" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                font-weight="700" fill="#F4A261">Preparing</text>
+                            <text x="142" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                fill="#8A9A8A">Packed</text>
+                            <text x="178" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                fill="#8A9A8A">Done</text>
+                            <!-- Icon -->
+                            <circle cx="105" cy="148" r="36" fill="#fef3e2" />
+                            <text x="105" y="163" text-anchor="middle" font-size="32">📦</text>
+                            <!-- Pulse ring -->
+                            <circle cx="105" cy="148" r="44" fill="none" stroke="#F4A261" stroke-width="1.5"
+                                opacity=".4" />
+                            <text x="105" y="204" text-anchor="middle" font-family="system-ui" font-size="15"
+                                font-weight="900" fill="#92400e">Preparing Order…</text>
+                            <text x="105" y="220" text-anchor="middle" font-family="system-ui" font-size="10"
+                                fill="#6B7B6B">Shop is packing your items</text>
+                            <!-- Progress bar -->
+                            <rect x="30" y="234" width="150" height="6" rx="3" fill="#E0EDE0" />
+                            <rect x="30" y="234" width="90" height="6" rx="3" fill="#F4A261" />
+                            <text x="105" y="254" text-anchor="middle" font-family="system-ui" font-size="9"
+                                fill="#8A9A8A">Packing in progress…</text>
+                            <!-- What's next card -->
+                            <rect x="18" y="264" width="174" height="46" rx="12" fill="#fef3e2" stroke="#fcd34d"
+                                stroke-width="1" />
+                            <text x="30" y="281" font-family="system-ui" font-size="10" font-weight="700"
+                                fill="#92400e">⏳ Almost ready!</text>
+                            <text x="30" y="295" font-family="system-ui" font-size="9" fill="#92400e">You'll get an SMS
+                                when packing is</text>
+                            <text x="30" y="307" font-family="system-ui" font-size="9" fill="#92400e">done — come pick
+                                up your order.</text>
+                            <!-- Items summary -->
+                            <rect x="18" y="320" width="174" height="60" rx="10" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <text x="30" y="338" font-family="system-ui" font-size="9" font-weight="700"
+                                fill="#8A9A8A">ORDER · ORD-001</text>
+                            <text x="30" y="354" font-family="system-ui" font-size="10" fill="#111">5 items · ₹370
+                                total</text>
+                            <text x="185" y="354" text-anchor="end" font-family="system-ui" font-size="9"
+                                fill="#8A9A8A">3:47 PM</text>
+                            <text x="30" y="372" font-family="system-ui" font-size="9" fill="#F4A261">● Preparing</text>
+                            <rect x="70" y="405" width="70" height="4" rx="2" fill="#111" opacity=".15" />
+                        </svg>
+                        <div class="ph-tag">Preparing</div>
+                    </div>
+
+                    <!-- P8: PACKING DONE - PICK UP -->
+                    <div class="ph-col">
+                        <svg width="210" height="420" viewBox="0 0 210 420" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="206" height="416" rx="32" fill="#111" />
+                            <rect x="11" y="11" width="188" height="398" rx="24" fill="#fff" />
+                            <rect x="11" y="11" width="188" height="42" rx="24" fill="#065f46" />
+                            <rect x="11" y="37" width="188" height="16" fill="#065f46" />
+                            <rect x="70" y="11" width="70" height="20" rx="10" fill="#111" />
+                            <text x="26" y="27" font-family="system-ui" font-size="9"
+                                fill="rgba(255,255,255,.6)">9:41</text>
+                            <text x="105" y="33" text-anchor="middle" font-family="system-ui" font-size="11"
+                                font-weight="800" fill="#fff">Order Status</text>
+                            <!-- Status dots - 4 filled -->
+                            <line x1="32" y1="72" x2="178" y2="72" stroke="#E0EDE0" stroke-width="2" />
+                            <line x1="32" y1="72" x2="142" y2="72" stroke="#2D6A4F" stroke-width="2" />
+                            <circle cx="32" cy="72" r="8" fill="#2D6A4F" />
+                            <text x="32" y="76" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#fff">✓</text>
+                            <circle cx="68" cy="72" r="8" fill="#2D6A4F" />
+                            <text x="68" y="76" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#fff">✓</text>
+                            <circle cx="105" cy="72" r="8" fill="#2D6A4F" />
+                            <text x="105" y="76" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#fff">✓</text>
+                            <circle cx="142" cy="72" r="8" fill="#2D6A4F" />
+                            <text x="142" y="76" text-anchor="middle" font-family="system-ui" font-size="9"
+                                font-weight="700" fill="#fff">✓</text>
+                            <circle cx="178" cy="72" r="8" fill="#DDE8DD" />
+                            <text x="178" y="76" text-anchor="middle" font-family="system-ui" font-size="8"
+                                fill="#8A9A8A">5</text>
+                            <text x="32" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                font-weight="700" fill="#2D6A4F">Placed</text>
+                            <text x="68" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                font-weight="700" fill="#2D6A4F">Accepted</text>
+                            <text x="105" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                font-weight="700" fill="#2D6A4F">Prepared</text>
+                            <text x="142" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                font-weight="700" fill="#2D6A4F">Packed ✓</text>
+                            <text x="178" y="90" text-anchor="middle" font-family="system-ui" font-size="7"
+                                fill="#8A9A8A">Done</text>
+                            <!-- Big notification -->
+                            <rect x="18" y="102" width="174" height="80" rx="16" fill="#065f46" />
+                            <text x="105" y="128" text-anchor="middle" font-size="26">🏪</text>
+                            <text x="105" y="150" text-anchor="middle" font-family="system-ui" font-size="12"
+                                font-weight="900" fill="#fff">Order is Packed!</text>
+                            <text x="105" y="165" text-anchor="middle" font-family="system-ui" font-size="9"
+                                fill="rgba(255,255,255,.7)">Please come pick up your order</text>
+                            <text x="105" y="200" text-anchor="middle" font-family="system-ui" font-size="15"
+                                font-weight="900" fill="#065f46">Pick Up Your Order 📦</text>
+                            <text x="105" y="216" text-anchor="middle" font-family="system-ui" font-size="10"
+                                fill="#6B7B6B">Your items are packed and waiting!</text>
+                            <!-- SMS note -->
+                            <rect x="18" y="228" width="174" height="42" rx="10" fill="#F0FFF4" stroke="#D8F3DC"
+                                stroke-width="1.5" />
+                            <text x="30" y="244" font-family="system-ui" font-size="10" font-weight="700"
+                                fill="#2D6A4F">📱 SMS sent to your phone</text>
+                            <text x="30" y="258" font-family="system-ui" font-size="9" fill="#40916C">"Your order is
+                                packed. Please pick up."</text>
+                            <!-- Shop address card -->
+                            <rect x="18" y="280" width="174" height="56" rx="10" fill="#F7F9F7" stroke="#DDE8DD"
+                                stroke-width="1" />
+                            <text x="30" y="298" font-family="system-ui" font-size="9" font-weight="700"
+                                fill="#8A9A8A">PICK UP FROM</text>
+                            <text x="30" y="314" font-family="system-ui" font-size="11" font-weight="700" fill="#111">🏪
+                                FreshCart Store</text>
+                            <text x="30" y="328" font-family="system-ui" font-size="9" fill="#8A9A8A">Main Bazaar, Pune
+                                · Open till 9 PM</text>
+                            <!-- Order ID chip -->
+                            <rect x="44" y="348" width="122" height="24" rx="12" fill="#D8F3DC" />
+                            <text x="105" y="364" text-anchor="middle" font-family="system-ui" font-size="10"
+                                font-weight="700" fill="#2D6A4F">ORD-20240715-001</text>
+                            <rect x="70" y="405" width="70" height="4" rx="2" fill="#111" opacity=".15" />
+                        </svg>
+                        <div class="ph-tag">Packing Done</div>
+                    </div>
+
+                </div><!-- /row 2 -->
+            </div><!-- /phone-rows -->
+        </div>
+    </div>
+
+    <!-- ══ EMAIL CASH MEMO ════════════════════════════════ -->
+    <div class="sec-w">
+        <div class="inn">
+            <div class="ey">After Delivery</div>
+            <h2>PDF Cash Memo — sent to customer email</h2>
+            <p class="lead">When admin clicks "Mark as Delivered", FastAPI automatically emails the PDF bill to the
+                customer's registered email address. No manual step needed.</p>
+            <div class="email-wrap">
+                <div class="email-client-bar">
+                    <div class="bd bdr"></div>
+                    <div class="bd bdy"></div>
+                    <div class="bd bdg-"></div>
+                    <div
+                        style="flex:1;background:#fff;border:1px solid #e0e0e0;border-radius:6px;padding:4px 14px;font-size:12px;color:#888;max-width:400px;margin:0 auto;">
+                        Gmail — Inbox</div>
+                </div>
+                <div class="email-meta">
+                    <div style="display:flex;gap:14px;align-items:flex-start;">
+                        <div
+                            style="width:40px;height:40px;border-radius:50%;background:#1B4332;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
+                            🛒</div>
+                        <div style="flex:1;">
+                            <div style="font-size:15px;font-weight:800;color:#111;margin-bottom:2px;">Your FreshCart
+                                Bill — ORD-20240715-001</div>
+                            <div style="font-size:12px;color:#888;">FreshCart Store &lt;noreply@freshcart.in&gt; →
+                                <strong>rahul@gmail.com</strong></div>
+                            <div style="font-size:11px;color:#aaa;margin-top:2px;">15 Jul 2024, 4:12 PM · 📎
+                                bill-ORD-001.pdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="email-body">
+                    <div style="max-width:520px;margin:0 auto;">
+                        <p style="color:#444;font-size:14px;margin-bottom:20px;">Hi Rahul,<br><br>Thank you for shopping
+                            at <strong>FreshCart</strong>! Your order has been delivered. Please find your bill attached
+                            as a PDF.</p>
+                        <!-- Bill preview box -->
+                        <div style="border:1.5px solid #DDE8DD;border-radius:14px;overflow:hidden;margin-bottom:20px;">
+                            <div style="background:#1B4332;padding:18px 24px;text-align:center;">
+                                <div style="font-size:22px;font-weight:900;color:#fff;">🛒 FreshCart</div>
+                                <div style="font-size:12px;color:#95D5B2;margin-top:2px;">Main Bazaar, Pune · +91 98765
+                                    43210</div>
+                            </div>
+                            <div style="padding:20px 24px;background:#fff;">
+                                <div
+                                    style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:12px;">
+                                    <span>Bill No: <strong style="color:#111;">ORD-20240715-001</strong></span>
+                                    <span>Date: <strong style="color:#111;">15 Jul 2024</strong></span>
+                                </div>
+                                <div
+                                    style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:16px;">
+                                    <span>Customer: <strong style="color:#111;">Rahul Sharma</strong></span>
+                                    <span>Phone: <strong style="color:#111;">+91 99887 76655</strong></span>
+                                </div>
+                                <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                                    <tr style="background:#F7F9F7;">
+                                        <th
+                                            style="text-align:left;padding:7px 10px;font-size:11px;color:#888;border-bottom:1px solid #DDE8DD;">
+                                            ITEM</th>
+                                        <th
+                                            style="padding:7px 10px;font-size:11px;color:#888;border-bottom:1px solid #DDE8DD;">
+                                            QTY</th>
+                                        <th
+                                            style="text-align:right;padding:7px 10px;font-size:11px;color:#888;border-bottom:1px solid #DDE8DD;">
+                                            TOTAL</th>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:7px 10px;border-bottom:1px solid #f0f0f0;">Tomatoes</td>
+                                        <td
+                                            style="padding:7px 10px;text-align:center;border-bottom:1px solid #f0f0f0;color:#888;">
+                                            2 kg × ₹25</td>
+                                        <td
+                                            style="padding:7px 10px;text-align:right;border-bottom:1px solid #f0f0f0;font-weight:700;">
+                                            ₹50</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:7px 10px;border-bottom:1px solid #f0f0f0;">Paneer 200g</td>
+                                        <td
+                                            style="padding:7px 10px;text-align:center;border-bottom:1px solid #f0f0f0;color:#888;">
+                                            1 pc × ₹80</td>
+                                        <td
+                                            style="padding:7px 10px;text-align:right;border-bottom:1px solid #f0f0f0;font-weight:700;">
+                                            ₹80</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:7px 10px;border-bottom:1px solid #f0f0f0;">Milk 1L</td>
+                                        <td
+                                            style="padding:7px 10px;text-align:center;border-bottom:1px solid #f0f0f0;color:#888;">
+                                            2 L × ₹60</td>
+                                        <td
+                                            style="padding:7px 10px;text-align:right;border-bottom:1px solid #f0f0f0;font-weight:700;">
+                                            ₹120</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:7px 10px;border-bottom:1px solid #f0f0f0;">Toor Dal 1kg</td>
+                                        <td
+                                            style="padding:7px 10px;text-align:center;border-bottom:1px solid #f0f0f0;color:#888;">
+                                            1 kg × ₹120</td>
+                                        <td
+                                            style="padding:7px 10px;text-align:right;border-bottom:1px solid #f0f0f0;font-weight:700;">
+                                            ₹120</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:7px 10px;">Coriander</td>
+                                        <td style="padding:7px 10px;text-align:center;color:#888;">1 bunch × ₹10</td>
+                                        <td style="padding:7px 10px;text-align:right;font-weight:700;">₹10</td>
+                                    </tr>
+                                </table>
+                                <div
+                                    style="display:flex;justify-content:space-between;background:#F0FFF4;border-radius:8px;padding:12px 16px;margin-top:12px;">
+                                    <span style="font-size:16px;font-weight:900;color:#1B4332;">TOTAL</span>
+                                    <span style="font-size:18px;font-weight:900;color:#1B4332;">₹380</span>
+                                </div>
+                                <div style="text-align:center;margin-top:14px;font-size:12px;color:#888;">Thank you for
+                                    shopping with FreshCart! 🙏</div>
+                            </div>
+                        </div>
+                        <!-- PDF attachment chip -->
+                        <div
+                            style="display:inline-flex;align-items:center;gap:10px;background:#F7F9F7;border:1.5px solid #DDE8DD;border-radius:10px;padding:10px 16px;">
+                            <span style="font-size:22px;">📄</span>
+                            <div>
+                                <div style="font-size:13px;font-weight:700;color:#111;">bill-ORD-20240715-001.pdf</div>
+                                <div style="font-size:11px;color:#888;">42 KB · PDF</div>
+                            </div>
+                            <span
+                                style="background:#2D6A4F;color:#fff;padding:4px 12px;border-radius:6px;font-size:11px;font-weight:700;margin-left:8px;">Download</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ ADMIN PANEL ════════════════════════════════════ -->
+    <div class="sec-g">
+        <div class="inn">
+            <div class="ey">Shop Owner</div>
+            <h2>Admin panel — 3-stage order management</h2>
+            <p class="lead">Accept → Pack → Deliver. Each button triggers the right action: acceptance notification,
+                packing SMS, or email bill.</p>
+            <div class="bwrap">
+                <div class="bbar">
+                    <div class="bd bdr"></div>
+                    <div class="bd bdy"></div>
+                    <div class="bd bdg-"></div>
+                    <div class="bloc">localhost:3000/admin/orders</div>
+                </div>
+                <svg width="100%" viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" style="display:block">
+                    <!-- Sidebar -->
+                    <rect x="0" y="0" width="190" height="500" fill="#1B4332" />
+                    <text x="20" y="36" font-family="system-ui" font-size="15" font-weight="900" fill="#fff">🛒
+                        FreshCart</text>
+                    <text x="20" y="52" font-family="system-ui" font-size="9" fill="rgba(255,255,255,.4)">ADMIN</text>
+                    <rect x="10" y="62" width="170" height="34" rx="8" fill="rgba(255,255,255,.12)" />
+                    <text x="24" y="83" font-family="system-ui" font-size="12" font-weight="700" fill="#fff">📦 Live
+                        Orders</text>
+                    <text x="24" y="130" font-family="system-ui" font-size="12" fill="rgba(255,255,255,.5)">📊
+                        Dashboard</text>
+                    <text x="24" y="165" font-family="system-ui" font-size="12" fill="rgba(255,255,255,.5)">🗂
+                        Products</text>
+                    <text x="24" y="200" font-family="system-ui" font-size="12" fill="rgba(255,255,255,.5)">📈
+                        Reports</text>
+                    <text x="24" y="235" font-family="system-ui" font-size="12" fill="rgba(255,255,255,.5)">⚙️
+                        Settings</text>
+                    <rect x="10" y="460" width="170" height="30" rx="8" fill="rgba(255,255,255,.06)" />
+                    <circle cx="30" cy="475" r="10" fill="#52B788" />
+                    <text x="30" y="479" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700"
+                        fill="#fff">S</text>
+                    <text x="46" y="472" font-family="system-ui" font-size="10" font-weight="700" fill="#fff">Shop
+                        Owner</text>
+                    <text x="46" y="483" font-family="system-ui" font-size="9" fill="rgba(255,255,255,.4)">Admin</text>
+                    <!-- Main content -->
+                    <rect x="190" y="0" width="770" height="500" fill="#F7F9F7" />
+                    <rect x="190" y="0" width="770" height="48" fill="#fff" />
+                    <rect x="190" y="47" width="770" height="1" fill="#DDE8DD" />
+                    <text x="210" y="30" font-family="system-ui" font-size="17" font-weight="900" fill="#111">Live
+                        Orders</text>
+                    <!-- Stats -->
+                    <rect x="210" y="58" width="112" height="52" rx="10" fill="#fff" stroke="#DDE8DD"
+                        stroke-width="1" />
+                    <text x="224" y="76" font-family="system-ui" font-size="9" fill="#8A9A8A">New Orders</text>
+                    <text x="224" y="100" font-family="system-ui" font-size="22" font-weight="900"
+                        fill="#1e3a8f">2</text>
+                    <rect x="330" y="58" width="112" height="52" rx="10" fill="#fff" stroke="#DDE8DD"
+                        stroke-width="1" />
+                    <text x="344" y="76" font-family="system-ui" font-size="9" fill="#8A9A8A">Preparing</text>
+                    <text x="344" y="100" font-family="system-ui" font-size="22" font-weight="900"
+                        fill="#F4A261">1</text>
+                    <rect x="450" y="58" width="112" height="52" rx="10" fill="#fff" stroke="#DDE8DD"
+                        stroke-width="1" />
+                    <text x="464" y="76" font-family="system-ui" font-size="9" fill="#8A9A8A">Packed</text>
+                    <text x="464" y="100" font-family="system-ui" font-size="22" font-weight="900"
+                        fill="#854d0e">1</text>
+                    <rect x="570" y="58" width="112" height="52" rx="10" fill="#fff" stroke="#DDE8DD"
+                        stroke-width="1" />
+                    <text x="584" y="76" font-family="system-ui" font-size="9" fill="#8A9A8A">Delivered Today</text>
+                    <text x="584" y="100" font-family="system-ui" font-size="22" font-weight="900"
+                        fill="#2D6A4F">8</text>
+                    <rect x="690" y="58" width="120" height="52" rx="10" fill="#fff" stroke="#DDE8DD"
+                        stroke-width="1" />
+                    <text x="704" y="76" font-family="system-ui" font-size="9" fill="#8A9A8A">Revenue Today</text>
+                    <text x="704" y="100" font-family="system-ui" font-size="21" font-weight="900"
+                        fill="#1B4332">₹3,210</text>
+
+                    <!-- STAGE 1: NEW - ACCEPT ORDER -->
+                    <rect x="198" y="126" width="234" height="354" rx="14" fill="#fff" stroke="#93c5fd"
+                        stroke-width="1.5" />
+                    <rect x="198" y="126" width="234" height="36" rx="14" fill="#1e3a8f" />
+                    <rect x="198" y="146" width="234" height="16" fill="#1e3a8f" />
+                    <text x="212" y="148" font-family="system-ui" font-size="12" font-weight="800" fill="#fff">● NEW
+                        ORDER</text>
+                    <rect x="362" y="132" width="60" height="18" rx="9" fill="#3b82f6" />
+                    <text x="392" y="145" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700"
+                        fill="#fff">PLACED</text>
+                    <!-- Card content -->
+                    <text x="212" y="182" font-family="system-ui" font-size="11" font-weight="700"
+                        fill="#111">ORD-20240715-001</text>
+                    <text x="212" y="196" font-family="system-ui" font-size="10" fill="#8A9A8A">+91 99887 76655 · 3:45
+                        PM</text>
+                    <line x1="212" y1="206" x2="418" y2="206" stroke="#E0EDE0" stroke-width="1" />
+                    <text x="212" y="222" font-family="system-ui" font-size="10" font-weight="700"
+                        fill="#8A9A8A">ITEMS</text>
+                    <text x="212" y="238" font-family="system-ui" font-size="11" fill="#111">• Tomatoes — 2 kg</text>
+                    <text x="212" y="254" font-family="system-ui" font-size="11" fill="#111">• Paneer 200g — 1 pc</text>
+                    <text x="212" y="270" font-family="system-ui" font-size="11" fill="#111">• Milk 1L — 2 L</text>
+                    <text x="212" y="286" font-family="system-ui" font-size="11" fill="#111">• Toor Dal — 1 kg</text>
+                    <text x="212" y="302" font-family="system-ui" font-size="11" fill="#111">• Coriander — 1
+                        bunch</text>
+                    <line x1="212" y1="314" x2="418" y2="314" stroke="#E0EDE0" stroke-width="1" />
+                    <text x="212" y="330" font-family="system-ui" font-size="12" font-weight="800" fill="#1B4332">Total:
+                        ₹370</text>
+                    <!-- Info label -->
+                    <rect x="210" y="344" width="220" height="32" rx="8" fill="#dbeafe" />
+                    <text x="320" y="364" text-anchor="middle" font-family="system-ui" font-size="10" fill="#1e3a8f">ℹ
+                        Customer waiting for acceptance</text>
+                    <!-- Accept button - BIG GREEN -->
+                    <rect x="210" y="386" width="220" height="38" rx="10" fill="#1B4332" />
+                    <text x="320" y="409" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="800"
+                        fill="#fff">✓ Accept Order</text>
+                    <text x="320" y="456" text-anchor="middle" font-family="system-ui" font-size="10"
+                        fill="#8A9A8A">Notifies customer in-app</text>
+
+                    <!-- STAGE 2: PREPARING - MARK PACKING DONE -->
+                    <rect x="446" y="126" width="234" height="354" rx="14" fill="#fff" stroke="#fcd34d"
+                        stroke-width="1.5" />
+                    <rect x="446" y="126" width="234" height="36" rx="14" fill="#92400e" />
+                    <rect x="446" y="146" width="234" height="16" fill="#92400e" />
+                    <text x="460" y="148" font-family="system-ui" font-size="12" font-weight="800" fill="#fff">⏳
+                        PREPARING</text>
+                    <rect x="602" y="132" width="70" height="18" rx="9" fill="#F4A261" />
+                    <text x="637" y="145" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700"
+                        fill="#fff">PREPARING</text>
+                    <text x="460" y="182" font-family="system-ui" font-size="11" font-weight="700"
+                        fill="#111">ORD-20240715-002</text>
+                    <text x="460" y="196" font-family="system-ui" font-size="10" fill="#8A9A8A">+91 77665 54433 · 3:30
+                        PM</text>
+                    <line x1="460" y1="206" x2="666" y2="206" stroke="#E0EDE0" stroke-width="1" />
+                    <text x="460" y="222" font-family="system-ui" font-size="10" font-weight="700"
+                        fill="#8A9A8A">ITEMS</text>
+                    <text x="460" y="238" font-family="system-ui" font-size="11" fill="#111">• Onion — 2 kg</text>
+                    <text x="460" y="254" font-family="system-ui" font-size="11" fill="#111">• Amul Butter — 2 pc</text>
+                    <text x="460" y="270" font-family="system-ui" font-size="11" fill="#111">• Coriander — 1
+                        bunch</text>
+                    <text x="460" y="286" font-family="system-ui" font-size="11" fill="#111">• Atta 5kg — 1 bag</text>
+                    <line x1="460" y1="298" x2="666" y2="298" stroke="#E0EDE0" stroke-width="1" />
+                    <text x="460" y="314" font-family="system-ui" font-size="12" font-weight="800" fill="#1B4332">Total:
+                        ₹340</text>
+                    <!-- Info -->
+                    <rect x="458" y="330" width="220" height="32" rx="8" fill="#fef3e2" />
+                    <text x="568" y="350" text-anchor="middle" font-family="system-ui" font-size="10" fill="#92400e">📱
+                        Sending SMS to customer when done</text>
+                    <!-- Pack done button - AMBER -->
+                    <rect x="458" y="372" width="220" height="38" rx="10" fill="#F4A261" />
+                    <text x="568" y="395" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="800"
+                        fill="#fff">📦 Mark Packing Done</text>
+                    <text x="568" y="440" text-anchor="middle" font-family="system-ui" font-size="10" fill="#8A9A8A">SMS
+                        auto-sent to customer</text>
+
+                    <!-- STAGE 3: PACKED - DELIVERY DONE + EMAIL -->
+                    <rect x="694" y="126" width="234" height="354" rx="14" fill="#fff" stroke="#6ee7b7"
+                        stroke-width="1.5" />
+                    <rect x="694" y="126" width="234" height="36" rx="14" fill="#065f46" />
+                    <rect x="694" y="146" width="234" height="16" fill="#065f46" />
+                    <text x="708" y="148" font-family="system-ui" font-size="12" font-weight="800" fill="#fff">✓ PACKED
+                        — READY</text>
+                    <rect x="844" y="132" width="70" height="18" rx="9" fill="#34d399" />
+                    <text x="879" y="145" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="700"
+                        fill="#065f46">PACKED</text>
+                    <text x="708" y="182" font-family="system-ui" font-size="11" font-weight="700"
+                        fill="#111">ORD-20240715-003</text>
+                    <text x="708" y="196" font-family="system-ui" font-size="10" fill="#8A9A8A">+91 88776 65544 · 3:10
+                        PM</text>
+                    <line x1="708" y1="206" x2="914" y2="206" stroke="#E0EDE0" stroke-width="1" />
+                    <text x="708" y="222" font-family="system-ui" font-size="10" font-weight="700"
+                        fill="#8A9A8A">ITEMS</text>
+                    <text x="708" y="238" font-family="system-ui" font-size="11" fill="#111">• Potato — 3 kg</text>
+                    <text x="708" y="254" font-family="system-ui" font-size="11" fill="#111">• Tomatoes — 1 kg</text>
+                    <text x="708" y="270" font-family="system-ui" font-size="11" fill="#111">• Sunflower Oil — 1
+                        L</text>
+                    <line x1="708" y1="284" x2="914" y2="284" stroke="#E0EDE0" stroke-width="1" />
+                    <text x="708" y="300" font-family="system-ui" font-size="12" font-weight="800" fill="#1B4332">Total:
+                        ₹210</text>
+                    <!-- Email note -->
+                    <rect x="706" y="314" width="220" height="42" rx="8" fill="#F0FFF4" stroke="#D8F3DC"
+                        stroke-width="1" />
+                    <text x="716" y="331" font-family="system-ui" font-size="10" font-weight="700" fill="#065f46">📧 PDF
+                        bill emailed on delivery</text>
+                    <text x="716" y="345" font-family="system-ui" font-size="9" fill="#40916C">To:
+                        rahul@gmail.com</text>
+                    <!-- Delivery done button -->
+                    <rect x="706" y="366" width="220" height="38" rx="10" fill="#065f46" />
+                    <text x="816" y="389" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="800"
+                        fill="#fff">🚚 Mark as Delivered</text>
+                    <rect x="706" y="414" width="220" height="28" rx="8" fill="#D8F3DC" />
+                    <text x="816" y="431" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="700"
+                        fill="#1B4332">📧 PDF Cash Memo emailed</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ TECH STACK ═════════════════════════════════════ -->
+    <div class="sec">
+        <div class="ey">Technology</div>
+        <h2>Full tech stack</h2>
+        <p class="lead">Every layer chosen for clarity, fast development, and easy deployment on any server.</p>
+        <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;">
+            <table class="tt">
+                <tr>
+                    <th>Layer</th>
+                    <th>Technology</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td>Frontend</td>
+                    <td>Next.js 14</td>
+                    <td>Customer app + Admin panel in one project. App Router, server components, middleware guards
+                        /admin routes.</td>
+                </tr>
+                <tr>
+                    <td>Styling</td>
+                    <td>Tailwind + Shadcn/ui</td>
+                    <td>Shadcn gives tables, dialogs, badges, toasts for admin. Tailwind for custom screens and mobile
+                        layout.</td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>Zustand</td>
+                    <td>Cart items + auth token + user profile state. Lightweight, no boilerplate.</td>
+                </tr>
+                <tr>
+                    <td>Backend</td>
+                    <td>Python FastAPI</td>
+                    <td>Async REST API. Auto Swagger docs at <code>/docs</code>. Pydantic validation built-in. Best
+                        Python REST choice.</td>
+                </tr>
+                <tr>
+                    <td>Database ODM</td>
+                    <td>Beanie + Motor</td>
+                    <td>Async MongoDB ODM. Pydantic models = DB documents. Clean, type-safe.</td>
+                </tr>
+                <tr>
+                    <td>Database</td>
+                    <td>MongoDB (Docker image)</td>
+                    <td><code>mongo:7</code> Docker container. Replica set enabled for multi-document transactions on
+                        checkout.</td>
+                </tr>
+                <tr>
+                    <td>Auth</td>
+                    <td>python-jose + passlib</td>
+                    <td>JWT access (15 min) + refresh tokens (30 days). OTP hashed with bcrypt.</td>
+                </tr>
+                <tr>
+                    <td>OTP / SMS</td>
+                    <td>Twilio Verify or 2factor.in</td>
+                    <td>OTP on login. SMS to customer when packing done: "Your order is ready — please pick up."</td>
+                </tr>
+                <tr>
+                    <td>Email (PDF Bill)</td>
+                    <td>fastapi-mail + SendGrid</td>
+                    <td>When admin marks Delivered → FastAPI emails PDF cash memo to customer's email. PDF attached
+                        inline.</td>
+                </tr>
+                <tr>
+                    <td>PDF Generation</td>
+                    <td>WeasyPrint + Jinja2</td>
+                    <td>Jinja2 HTML bill template → WeasyPrint converts to PDF bytes → attached to email.</td>
+                </tr>
+                <tr>
+                    <td>Images</td>
+                    <td>Cloudinary</td>
+                    <td>Product images. Free tier 25 GB. CDN included. Direct upload from Next.js browser.</td>
+                </tr>
+                <tr>
+                    <td>Deployment</td>
+                    <td>Docker Compose</td>
+                    <td>FastAPI + MongoDB in one compose file. Runs on any Linux VPS. One command:
+                        <code>docker compose up -d</code></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ MONGODB DOCKER ═════════════════════════════════ -->
+    <div class="sec-w">
+        <div class="inn">
+            <div class="ey">Database</div>
+            <h2>MongoDB — Docker image setup</h2>
+            <p class="lead">MongoDB runs as a <code>mongo:7</code> Docker container with replica set enabled — required
+                for checkout transactions. No Atlas dependency, runs on your own server.</p>
+            <div class="g2">
+                <div>
+                    <div style="font-size:12px;font-weight:700;color:var(--lgray);margin-bottom:8px;">docker-compose.yml
+                    </div>
+                    <pre><code><span class="cm"># All services: FastAPI + MongoDB</span>
+version: <span class="sv">'3.8'</span>
+
+services:
+
+  <span class="ky">mongodb</span>:
+    image: <span class="vl">mongo:7</span>
+    container_name: <span class="vl">freshcart-mongo</span>
+    restart: <span class="vl">unless-stopped</span>
+    ports:
+      - <span class="sv">"27017:27017"</span>
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: <span class="vl">admin</span>
+      MONGO_INITDB_ROOT_PASSWORD: <span class="vl">freshcart123</span>
+      MONGO_INITDB_DATABASE: <span class="vl">freshcartdb</span>
+    command: <span class="sv">--replSet rs0 --bind_ip_all</span>
+    volumes:
+      - <span class="vl">mongo_data:/data/db</span>
+    healthcheck:
+      test: <span class="sv">["CMD","mongosh","--eval","db.adminCommand('ping')"]</span>
+      interval: <span class="vl">10s</span>
+      retries: <span class="vl">5</span>
+
+  <span class="ky">mongo-rs-init</span>:       <span class="cm"># runs once, then exits</span>
+    image: <span class="vl">mongo:7</span>
+    depends_on:
+      mongodb:
+        condition: <span class="vl">service_healthy</span>
+    restart: <span class="vl">no</span>
+    command: >
+      mongosh --host mongodb
+        -u admin -p freshcart123
+        --authenticationDatabase admin
+        --eval "rs.initiate({
+          _id: 'rs0',
+          members: [{_id:0,host:'mongodb:27017'}]
+        })"
+
+  <span class="ky">backend</span>:
+    build: <span class="vl">./backend</span>
+    container_name: <span class="vl">freshcart-api</span>
+    restart: <span class="vl">unless-stopped</span>
+    ports:
+      - <span class="sv">"8000:8000"</span>
+    depends_on:
+      mongodb:
+        condition: <span class="vl">service_healthy</span>
+    env_file: <span class="vl">./backend/.env</span>
+    volumes:
+      - <span class="vl">./backend:/app</span>
+    command: >
+      uvicorn app.main:app
+        --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  mongo_data:</code></pre>
+                </div>
+                <div>
+                    <div style="font-size:12px;font-weight:700;color:var(--lgray);margin-bottom:8px;">backend/.env</div>
+                    <pre><code><span class="cm"># MongoDB — Docker container</span>
+<span class="ky">MONGODB_URI</span>=<span class="vl">mongodb://admin:freshcart123@mongodb:27017/freshcartdb?authSource=admin&amp;replicaSet=rs0</span>
+<span class="ky">DB_NAME</span>=<span class="vl">freshcartdb</span>
+
+<span class="cm"># JWT</span>
+<span class="ky">JWT_SECRET</span>=<span class="vl">your-secret-key-change-in-prod</span>
+<span class="ky">ACCESS_TOKEN_EXPIRE_MINUTES</span>=<span class="vl">15</span>
+<span class="ky">REFRESH_TOKEN_EXPIRE_DAYS</span>=<span class="vl">30</span>
+
+<span class="cm"># OTP + Packing SMS</span>
+<span class="ky">TWILIO_ACCOUNT_SID</span>=<span class="vl">ACxxxxxxxxxxxxxxxx</span>
+<span class="ky">TWILIO_AUTH_TOKEN</span>=<span class="vl">xxxxxxxxxxxxxxxx</span>
+<span class="ky">TWILIO_PHONE</span>=<span class="vl">+15551234567</span>
+
+<span class="cm"># Email — PDF Cash Memo</span>
+<span class="ky">SENDGRID_API_KEY</span>=<span class="vl">SG.xxxxxxxx</span>
+<span class="ky">EMAIL_FROM</span>=<span class="vl">noreply@freshcart.in</span>
+<span class="ky">EMAIL_FROM_NAME</span>=<span class="vl">FreshCart Store</span>
+
+<span class="cm"># Cloudinary — product images</span>
+<span class="ky">CLOUDINARY_CLOUD_NAME</span>=<span class="vl">your_cloud</span>
+<span class="ky">CLOUDINARY_API_KEY</span>=<span class="vl">your_key</span>
+<span class="ky">CLOUDINARY_API_SECRET</span>=<span class="vl">your_secret</span>
+
+<span class="cm"># CORS</span>
+<span class="ky">ALLOWED_ORIGINS</span>=<span class="vl">http://localhost:3000</span></code></pre>
+
+                    <div
+                        style="background:#F0FFF4;border:1px solid #D8F3DC;border-radius:10px;padding:14px 16px;margin-top:14px;">
+                        <div style="font-size:12px;color:#2D6A4F;line-height:2;">
+                            <strong>▶ Start:</strong> <code>docker compose up -d</code><br>
+                            <strong>▶ API Docs:</strong> <code>localhost:8000/docs</code><br>
+                            <strong>▶ DB Shell:</strong> <code>docker exec -it freshcart-mongo mongosh</code><br>
+                            <strong>▶ Logs:</strong> <code>docker compose logs -f backend</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ TIMELINE ═══════════════════════════════════════ -->
+    <div class="sec-d">
+        <div class="inn">
+            <div class="ey">Delivery Roadmap</div>
+            <h2>6-phase development plan</h2>
+            <p class="lead">Each phase ends with a working, testable slice of the app — no surprises at the end.</p>
+            <div class="tl">
+                <div class="tli">
+                    <div class="tld"></div>
+                    <div class="tlp">Phase 1 <span class="tlw">2 weeks</span></div>
+                    <div class="tlt">Project Setup + OTP Auth + User Profile</div>
+                    <div class="tls">Docker Compose with MongoDB. FastAPI boilerplate + Beanie init. User model (name,
+                        phone, email). OTP send/verify via Twilio. JWT tokens. Next.js login page with 6-digit OTP UI.
+                        Profile page — name, email, order history, cart, logout.</div>
+                </div>
+                <div class="tli">
+                    <div class="tld"></div>
+                    <div class="tlp">Phase 2 <span class="tlw">2 weeks</span></div>
+                    <div class="tlt">Products + Cart</div>
+                    <div class="tls">Product CRUD API + Cloudinary images. Product listing with category filter +
+                        search. Cart API with price snapshots. Cart sidebar with qty controls + totals. Admin product
+                        management page. Category management.</div>
+                </div>
+                <div class="tli">
+                    <div class="tld"></div>
+                    <div class="tlp">Phase 3 <span class="tlw">1.5 weeks</span></div>
+                    <div class="tlt">Checkout → Order Placed → Admin Accept</div>
+                    <div class="tls">Checkout API in MongoDB transaction (cart → order + stock decrement). Order
+                        confirmation screen. Customer sees "Waiting for acceptance". Admin panel live orders board.
+                        "Accept Order" button → updates status → customer in-app notification.</div>
+                </div>
+                <div class="tli">
+                    <div class="tld"></div>
+                    <div class="tlp">Phase 4 <span class="tlw">1.5 weeks</span></div>
+                    <div class="tlt">Preparing → Packing Done → SMS to Customer</div>
+                    <div class="tls">Admin "Mark Packing Done" button. Twilio SMS to customer: "Your order is ready,
+                        please come pick it up." Customer app shows "Packing Done — Pick Up Your Order" screen. 5-step
+                        status tracker with live polling every 8 seconds.</div>
+                </div>
+                <div class="tli">
+                    <div class="tld"></div>
+                    <div class="tlp">Phase 5 <span class="tlw">1.5 weeks</span></div>
+                    <div class="tlt">Delivery Done → Email PDF Cash Memo</div>
+                    <div class="tls">Jinja2 HTML bill template → WeasyPrint PDF bytes. Admin "Mark as Delivered" button
+                        → FastAPI sends email with attached PDF (SendGrid). Customer receives cash memo in inbox. Order
+                        history shows past bills for download.</div>
+                </div>
+                <div class="tli">
+                    <div class="tld"></div>
+                    <div class="tlp">Phase 6 <span class="tlw">1 week</span></div>
+                    <div class="tlt">Polish + QA + Deploy</div>
+                    <div class="tls">Input validation, error states, loading skeletons, mobile responsive QA. OTP rate
+                        limiting. Admin dashboard stats + revenue reports. Docker Compose production config. Deploy to
+                        Linux VPS. Final UAT + handoff.</div>
+                </div>
+            </div>
+            <div
+                style="background:rgba(244,162,97,.1);border:1px solid rgba(244,162,97,.25);border-radius:14px;padding:22px 26px;margin-top:16px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+                <div>
+                    <div
+                        style="font-size:10px;font-weight:700;color:var(--a500);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">
+                        Total Timeline</div>
+                    <div style="font-size:34px;font-weight:900;color:#fff;letter-spacing:-1px;">9–10 weeks</div>
+                </div>
+                <div style="flex:1;border-left:1px solid rgba(255,255,255,.1);padding-left:22px;">
+                    <div style="color:var(--g200);font-size:13px;line-height:1.8;">One developer, full time. Every phase
+                        has a working demo you can test before the next begins. FastAPI auto-generates Swagger docs at
+                        <code>/docs</code> from day one — no extra API documentation effort needed.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ FOOTER ══════════════════════════════════════════ -->
+    <div class="footer">
+        <div style="font-size:36px;margin-bottom:14px;">🛒</div>
+        <h3>FreshCart — Ready to Build</h3>
+        <p>Complete grocery ordering platform with OTP login, user profiles, 5-stage order tracking, packing SMS alerts,
+            and automated PDF bill delivery to email.</p>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:0;">
+            <span
+                style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.7);padding:5px 14px;border-radius:6px;font-size:12px;">Next.js
+                14</span>
+            <span
+                style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.7);padding:5px 14px;border-radius:6px;font-size:12px;">Python
+                FastAPI</span>
+            <span
+                style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.7);padding:5px 14px;border-radius:6px;font-size:12px;">MongoDB
+                Docker</span>
+            <span
+                style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.7);padding:5px 14px;border-radius:6px;font-size:12px;">WeasyPrint
+                PDF</span>
+            <span
+                style="background:rgba(244,162,97,.2);border:1px solid rgba(244,162,97,.35);color:var(--a500);padding:5px 14px;border-radius:6px;font-size:12px;font-weight:700;">📧
+                Email Cash Memo</span>
+        </div>
+        <div class="footer-meta">Prepared for client · FreshCart Grocery Platform · 2024</div>
+    </div>
+</body>
+
+</html>

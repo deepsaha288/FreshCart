@@ -1,0 +1,39 @@
+# Ignore dependencies
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.db
+*.sqlite
+
+# Cache
+.cache/
+*.log
+.pytest_cache/
+
+# Build
+build/
+dist/
+*.egg-info/
