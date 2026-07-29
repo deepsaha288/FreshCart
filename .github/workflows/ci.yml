@@ -32,13 +32,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Build and push Backend Image
-      - name: Build and Push Backend
+      # Build Backend Image Locally
+      - name: Build Backend Locally
         uses: docker/build-push-action@v5
         with:
           context: ./backend
           file: ./backend/Dockerfile
-          push: true
+          push: false
+          load: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/freshcart-backend:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/freshcart-backend:${{ github.sha }}
@@ -51,13 +52,20 @@ jobs:
           exit-code: '0' # Logs vulnerability report but does not fail pipeline. Change to '1' to fail on findings.
           severity: 'CRITICAL,HIGH'
 
-      # Build and push Frontend Image
-      - name: Build and Push Frontend
+      # Push Backend Image to Docker Hub
+      - name: Push Backend to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/freshcart-backend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/freshcart-backend:${{ github.sha }}
+
+      # Build Frontend Image Locally
+      - name: Build Frontend Locally
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
           file: ./frontend/Dockerfile
-          push: true
+          push: false
+          load: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/freshcart-frontend:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/freshcart-frontend:${{ github.sha }}
@@ -69,3 +77,9 @@ jobs:
           format: 'table'
           exit-code: '0' # Logs vulnerability report but does not fail pipeline. Change to '1' to fail on findings.
           severity: 'CRITICAL,HIGH'
+
+      # Push Frontend Image to Docker Hub
+      - name: Push Frontend to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/freshcart-frontend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/freshcart-frontend:${{ github.sha }}
