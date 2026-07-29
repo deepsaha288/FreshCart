@@ -163,3 +163,15 @@ To delete the cluster completely (wipes local database/cache volumes):
 ```powershell
 minikube delete
 ```
+
+---
+
+## Part 5: Troubleshooting Common Errors
+
+### Docker API Connection Failure
+If you receive the error:
+> `Exiting due to PROVIDER_DOCKER_VERSION_EXIT_1: "docker version" ... failed to connect to the docker API`
+
+* **Reason:** The Docker Desktop daemon is not running.
+* **Fix:** Open **Docker Desktop** in Windows, wait for the status indicator to turn **Green** (indicating the engine is running), then re-run `minikube start`.
+
