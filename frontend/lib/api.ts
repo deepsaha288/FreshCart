@@ -142,16 +142,20 @@ class APIClient {
     return this.client.get('/api/cart')
   }
 
-  async addToCart(productId: string, quantity: number) {
-    return this.client.post('/api/cart/add', { product_id: productId, quantity })
+  async addToCart(productId: string, quantity: number, variantId?: string) {
+    return this.client.post('/api/cart/add', { product_id: productId, quantity, variant_id: variantId })
   }
 
-  async updateCartItem(productId: string, quantity: number) {
-    return this.client.put(`/api/cart/items/${productId}`, { quantity })
+  async updateCartItem(productId: string, quantity: number, variantId?: string) {
+    return this.client.put(`/api/cart/items/${productId}`, { quantity }, {
+      params: { variant_id: variantId }
+    })
   }
 
-  async removeFromCart(productId: string) {
-    return this.client.delete(`/api/cart/items/${productId}`)
+  async removeFromCart(productId: string, variantId?: string) {
+    return this.client.delete(`/api/cart/items/${productId}`, {
+      params: { variant_id: variantId }
+    })
   }
 
   async clearCart() {
@@ -179,6 +183,10 @@ class APIClient {
 
   async acceptOrder(orderId: string) {
     return this.client.post(`/api/orders/admin/${orderId}/accept`)
+  }
+
+  async declineOrder(orderId: string) {
+    return this.client.post(`/api/orders/admin/${orderId}/decline`)
   }
 
   async startPreparingOrder(orderId: string) {

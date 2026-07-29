@@ -84,7 +84,7 @@ class CategoryService:
         }
         
         MOCK_CATEGORIES[category_id] = category
-        print(f"✅ DEBUG: Category created: {category_id} - {name}")
+        print(f"[OK] DEBUG: Category created: {category_id} - {name}")
         
         return category
     
@@ -116,6 +116,6 @@ class CategoryService:
             return {"error": "Category not found"}
         
         del MOCK_CATEGORIES[category_id]
-        print(f"✅ DEBUG: Category deleted: {category_id}")
+        print(f"[OK] DEBUG: Category deleted: {category_id}")
         
         return {"message": "Category deleted successfully"}

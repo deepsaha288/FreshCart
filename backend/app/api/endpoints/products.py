@@ -40,7 +40,8 @@ async def create_product(product_req: CreateProductRequest):
             quantity_available=product_req.quantity_available,
             unit=product_req.unit,
             image_url=product_req.image_url,
-            is_available=product_req.is_available
+            is_available=product_req.is_available,
+            variants=product_req.variants
         )
         
         # Update category_name
@@ -93,6 +94,8 @@ async def update_product(product_id: str, product_req: UpdateProductRequest):
             update_data["image_url"] = product_req.image_url
         if product_req.is_available is not None:
             update_data["is_available"] = product_req.is_available
+        if product_req.variants is not None:
+            update_data["variants"] = product_req.variants
         
         result = await ProductService.update_product(product_id, **update_data)
         if "error" in result:

@@ -1,8 +1,16 @@
 """Product database model"""
 from datetime import datetime
-from typing import Optional
-
+from typing import Optional, List
+from pydantic import BaseModel
 from beanie import Document
+
+
+class ProductVariant(BaseModel):
+    """Sub-document representing a size/weight variant of a product"""
+    id: str
+    size: str
+    price: float
+    quantity_available: int
 
 
 class Product(Document):
@@ -15,6 +23,7 @@ class Product(Document):
     quantity_available: int
     unit: str = "kg"  # kg, liter, piece, etc.
     image_url: Optional[str] = None
+    variants: Optional[List[ProductVariant]] = None
     
     is_available: bool = True
     created_at: datetime = datetime.utcnow()

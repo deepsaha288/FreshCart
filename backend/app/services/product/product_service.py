@@ -15,7 +15,12 @@ MOCK_PRODUCTS: List[Dict] = [
         "quantity_available": 100,
         "unit": "kg",
         "image_url": "https://via.placeholder.com/200?text=BasmatiRice",
-        "is_available": True
+        "is_available": True,
+        "variants": [
+            {"id": "500g", "size": "500g", "price": 95.00, "quantity_available": 50},
+            {"id": "1kg", "size": "1kg", "price": 180.00, "quantity_available": 100},
+            {"id": "5kg", "size": "5kg", "price": 850.00, "quantity_available": 20}
+        ]
     },
     {
         "id": "prod-002",
@@ -27,7 +32,12 @@ MOCK_PRODUCTS: List[Dict] = [
         "quantity_available": 80,
         "unit": "kg",
         "image_url": "https://via.placeholder.com/200?text=Atta",
-        "is_available": True
+        "is_available": True,
+        "variants": [
+            {"id": "1kg", "size": "1kg", "price": 45.00, "quantity_available": 80},
+            {"id": "5kg", "size": "5kg", "price": 210.00, "quantity_available": 30},
+            {"id": "10kg", "size": "10kg", "price": 400.00, "quantity_available": 15}
+        ]
     },
     # Oil & Ghee
     {
@@ -52,7 +62,12 @@ MOCK_PRODUCTS: List[Dict] = [
         "quantity_available": 30,
         "unit": "kg",
         "image_url": "https://via.placeholder.com/200?text=Ghee",
-        "is_available": True
+        "is_available": True,
+        "variants": [
+            {"id": "200ml", "size": "200ml", "price": 110.00, "quantity_available": 50},
+            {"id": "500ml", "size": "500ml", "price": 240.00, "quantity_available": 40},
+            {"id": "1L", "size": "1L", "price": 450.00, "quantity_available": 30}
+        ]
     },
     # Masala
     {
@@ -65,7 +80,12 @@ MOCK_PRODUCTS: List[Dict] = [
         "quantity_available": 25,
         "unit": "kg",
         "image_url": "https://via.placeholder.com/200?text=GaramMasala",
-        "is_available": True
+        "is_available": True,
+        "variants": [
+            {"id": "50g", "size": "50g", "price": 25.00, "quantity_available": 80},
+            {"id": "100g", "size": "100g", "price": 45.00, "quantity_available": 60},
+            {"id": "250g", "size": "250g", "price": 100.00, "quantity_available": 40}
+        ]
     },
     {
         "id": "prod-006",
@@ -175,7 +195,7 @@ class ProductService:
     @staticmethod
     async def create_product(name: str, description: str, category_id: str, price: float, 
                             quantity_available: int, unit: str, image_url: str = None, 
-                            is_available: bool = True) -> dict:
+                            is_available: bool = True, variants: list = None) -> dict:
         """Create a new product"""
         # Generate product ID
         product_id = f"prod-{uuid.uuid4().hex[:6].upper()}"
@@ -190,11 +210,25 @@ class ProductService:
             "quantity_available": quantity_available,
             "unit": unit,
             "image_url": image_url,
-            "is_available": is_available
+            "is_available": is_available,
+            "variants": None
         }
         
+        if variants:
+            mapped_variants = []
+            for v in variants:
+                if isinstance(v, dict):
+                    mapped_variants.append(v)
+                elif hasattr(v, "model_dump"):
+                    mapped_variants.append(v.model_dump())
+                elif hasattr(v, "dict"):
+                    mapped_variants.append(v.dict())
+                else:
+                    mapped_variants.append(dict(v))
+            product["variants"] = mapped_variants
+        
         MOCK_PRODUCTS.append(product)
-        print(f"✅ DEBUG: Product created: {product_id} - {name}")
+        print(f"[OK] DEBUG: Product created: {product_id} - {name}")
         
         return product
     
@@ -207,6 +241,30 @@ class ProductService:
                 for key in ["name", "description", "category_id", "price", "quantity_available", "unit", "image_url", "is_available"]:
                     if key in kwargs and kwargs[key] is not None:
                         p[key] = kwargs[key]
+                
+                if "variants" in kwargs and kwargs["variants"] is not None:
+                    mapped_variants = []
+                    for v in kwargs["variants"]:
+                        if isinstance(v, dict):
+                            mapped_variants.append(v)
+                        elif hasattr(v, "model_dump"):
+                            mapped_variants.append(v.model_dump())
+                        elif hasattr(v, "dict"):
+                            mapped_variants.append(v.dict())
+                        else:
+                            mapped_variants.append(dict(v))
+                    p["variants"] = mapped_variants
+                
+                # Auto-correction: if quantity is updated, dynamically align availability
+                if "quantity_available" in kwargs:
+                    new_qty = kwargs["quantity_available"]
+                    if new_qty is not None:
+                        if new_qty > 0:
+                            if "is_available" not in kwargs:
+                                p["is_available"] = True
+                        else:
+                            p["is_available"] = False
+                
                 MOCK_PRODUCTS[i] = p
                 return p
         return {"error": "Product not found"}
@@ -217,7 +275,7 @@ class ProductService:
         for i, p in enumerate(MOCK_PRODUCTS):
             if p["id"] == product_id:
                 MOCK_PRODUCTS.pop(i)
-                print(f"✅ DEBUG: Product deleted: {product_id}")
+                print(f"[OK] DEBUG: Product deleted: {product_id}")
                 return {"message": "Product deleted successfully"}
         return {"error": "Product not found"}
 

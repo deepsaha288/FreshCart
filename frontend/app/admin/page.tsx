@@ -23,6 +23,12 @@ interface Product {
   unit: string
   image_url?: string
   is_available: boolean
+  variants?: Array<{
+    id: string
+    size: string
+    price: number
+    quantity_available: number
+  }>
 }
 
 interface Order {
@@ -59,12 +65,14 @@ export default function AdminPage() {
     quantity_available: 0,
     unit: 'kg',
     image_url: '',
+    variantsStr: '',
   })
   const [editingProductId, setEditingProductId] = useState<string | null>(null)
   const [editProduct, setEditProduct] = useState<Partial<Product> | null>(null)
   const [orders, setOrders] = useState<Order[]>([])
   const [packingOrderId, setPackingOrderId] = useState<string | null>(null)
-  const [orderFilter, setOrderFilter] = useState<'active' | 'delivered' | 'all'>('active')
+  const [orderFilter, setOrderFilter] = useState<'active' | 'delivered' | 'declined' | 'all'>('active')
+
 
 
   // Check admin status and fetch data
@@ -101,10 +109,10 @@ export default function AdminPage() {
     try {
       const orderRes = await apiClient.getAdminOrders()
       setOrders(orderRes.data.orders)
-      setMessage('Order queue refreshed successfully!')
+      setMessage('Orders refreshed successfully!')
       setTimeout(() => setMessage(''), 2500)
     } catch (err) {
-      setError('Failed to refresh order queue')
+      setError('Failed to refresh orders')
     } finally {
       setRefreshingQueue(false)
     }
@@ -173,6 +181,31 @@ export default function AdminPage() {
   }
 
   // ==================== PRODUCTS ====================
+  const parseVariantsString = (str: string) => {
+    if (!str.trim()) return undefined;
+    const parts = str.split(',');
+    const variants = [];
+    for (const part of parts) {
+      const [size, priceStr, qtyStr] = part.trim().split(':');
+      if (!size || !priceStr || !qtyStr) {
+        throw new Error(`Invalid variant format: "${part}". Must be Size:Price:Stock`);
+      }
+      const price = Number(priceStr);
+      const quantity_available = Number(qtyStr);
+      if (isNaN(price) || isNaN(quantity_available)) {
+        throw new Error(`Invalid price or stock in variant: "${part}"`);
+      }
+      const id = size.toLowerCase().replace(/\s+/g, '-');
+      variants.push({ id, size, price, quantity_available });
+    }
+    return variants;
+  };
+
+  const serializeVariants = (variants?: any[]) => {
+    if (!variants || variants.length === 0) return '';
+    return variants.map(v => `${v.size}:${v.price}:${v.quantity_available}`).join(', ');
+  };
+
   const handleAddProduct = async () => {
     try {
       if (!newProduct.name.trim() || !newProduct.category_id) {
@@ -196,6 +229,14 @@ export default function AdminPage() {
         return
       }
 
+      let parsedVariants = undefined;
+      try {
+        parsedVariants = parseVariantsString(newProduct.variantsStr);
+      } catch (err: any) {
+        setError(err.message);
+        return;
+      }
+
       const response = await apiClient.createProduct({
         name: newProduct.name,
         description: newProduct.description,
@@ -204,7 +245,8 @@ export default function AdminPage() {
         quantity_available: newProduct.quantity_available,
         unit: newProduct.unit,
         image_url: newProduct.image_url || undefined,
-      })
+        variants: parsedVariants
+      } as any)
 
       setProducts([...products, response.data])
       setNewProduct({
@@ -215,6 +257,7 @@ export default function AdminPage() {
         quantity_available: 0,
         unit: 'kg',
         image_url: '',
+        variantsStr: '',
       })
       setMessage('Product created successfully!')
       setTimeout(() => setMessage(''), 3000)
@@ -225,7 +268,10 @@ export default function AdminPage() {
 
   const handleEditProduct = (product: Product) => {
     setEditingProductId(product.id)
-    setEditProduct({ ...product })
+    setEditProduct({
+      ...product,
+      variantsStr: serializeVariants(product.variants)
+    } as any)
   }
 
   const handleSaveProduct = async () => {
@@ -236,6 +282,14 @@ export default function AdminPage() {
         return
       }
 
+      let parsedVariants = undefined;
+      try {
+        parsedVariants = parseVariantsString((editProduct as any).variantsStr || '');
+      } catch (err: any) {
+        setError(err.message);
+        return;
+      }
+
       await apiClient.updateProduct(editingProductId!, {
         name: editProduct.name,
         description: editProduct.description,
@@ -244,12 +298,13 @@ export default function AdminPage() {
         quantity_available: editProduct.quantity_available,
         unit: editProduct.unit,
         image_url: editProduct.image_url || undefined,
+        variants: parsedVariants
       })
 
       // Update local state
       setProducts(
         products.map((p) =>
-          p.id === editingProductId ? { ...p, ...editProduct } : p
+          p.id === editingProductId ? { ...p, ...editProduct, variants: parsedVariants } : p
         )
       )
       setEditingProductId(null)
@@ -292,6 +347,23 @@ export default function AdminPage() {
       setPackingOrderId(null)
     }
   }
+
+  const handleDeclineOrder = async (orderId: string) => {
+    if (!confirm(`Are you sure you want to decline order #${orderId}?`)) return
+    setPackingOrderId(orderId)
+    setError('')
+    try {
+      const response = await apiClient.declineOrder(orderId)
+      setOrders(orders.map((order) => order.order_id === orderId ? response.data : order))
+      setMessage(`Order ${orderId} declined.`)
+      setTimeout(() => setMessage(''), 3000)
+    } catch (err) {
+      setError('Failed to decline order: ' + (err as any).message)
+    } finally {
+      setPackingOrderId(null)
+    }
+  }
+
 
   const handleStartPreparing = async (orderId: string) => {
     setPackingOrderId(orderId)
@@ -337,11 +409,6 @@ export default function AdminPage() {
       setPackingOrderId(null)
     }
   }
-
-  const handleMarkOrderReady = async (orderId: string) => {
-    return handleMarkOrderPacked(orderId)
-  }
-
 
   if (loading) return <div className="min-h-screen flex items-center justify-center text-sm font-bold text-emerald-900">Loading workspace...</div>
 
@@ -414,18 +481,33 @@ export default function AdminPage() {
                 : 'bg-white text-slate-600 hover:bg-slate-100'
             }`}
           >
-            📋 Orders ({orders.filter((o) => (o.status || 'PLACED').toUpperCase() !== 'DELIVERED').length} Active)
+            📋 Orders ({orders.filter((o) => {
+              const s = (o.status || 'PLACED').toUpperCase()
+              return s !== 'DELIVERED' && s !== 'DECLINED' && s !== 'CANCELLED'
+            }).length} Active)
           </button>
         </div>
 
         {tab === 'orders' && (() => {
-          const activeOrders = orders.filter((o) => (o.status || 'PLACED').toUpperCase() !== 'DELIVERED')
+          const activeOrders = orders.filter((o) => {
+            const s = (o.status || 'PLACED').toUpperCase()
+            return s !== 'DELIVERED' && s !== 'DECLINED' && s !== 'CANCELLED'
+          })
+
           const deliveredOrders = orders.filter((o) => (o.status || 'PLACED').toUpperCase() === 'DELIVERED')
+
+          const declinedOrders = orders.filter((o) => {
+            const s = (o.status || 'PLACED').toUpperCase()
+            return s === 'DECLINED' || s === 'CANCELLED'
+          })
+
           const displayedOrders =
             orderFilter === 'active'
               ? activeOrders
               : orderFilter === 'delivered'
               ? deliveredOrders
+              : orderFilter === 'declined'
+              ? declinedOrders
               : orders
 
           return (
@@ -441,7 +523,7 @@ export default function AdminPage() {
                   className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-800 hover:bg-slate-50 active:bg-slate-100 flex items-center gap-2 transition shadow-sm disabled:opacity-50"
                 >
                   <span className={refreshingQueue ? "animate-spin text-emerald-800" : ""}>🔄</span>
-                  {refreshingQueue ? "Refreshing Queue..." : "Refresh Queue"}
+                  {refreshingQueue ? "Refreshing..." : "Refresh"}
                 </button>
               </div>
 
@@ -465,13 +547,23 @@ export default function AdminPage() {
                       : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
                   }`}
                 >
-                  ✅ Delivered Orders ({deliveredOrders.length})
+                  ✅ Delivered ({deliveredOrders.length})
+                </button>
+                <button
+                  onClick={() => setOrderFilter('declined')}
+                  className={`px-4 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 ${
+                    orderFilter === 'declined'
+                      ? 'bg-rose-700 text-white shadow'
+                      : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                  }`}
+                >
+                  ✕ Declined ({declinedOrders.length})
                 </button>
                 <button
                   onClick={() => setOrderFilter('all')}
                   className={`px-4 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 ${
                     orderFilter === 'all'
-                      ? 'bg-emerald-800 text-white shadow'
+                      ? 'bg-slate-800 text-white shadow'
                       : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
                   }`}
                 >
@@ -485,6 +577,8 @@ export default function AdminPage() {
                     ? 'No active orders in processing pipeline.'
                     : orderFilter === 'delivered'
                     ? 'No delivered orders yet.'
+                    : orderFilter === 'declined'
+                    ? 'No declined orders.'
                     : 'No customer orders yet.'}
                 </div>
               ) : (
@@ -502,6 +596,7 @@ export default function AdminPage() {
                               status === 'ACCEPTED' ? 'bg-emerald-100 text-emerald-900 border border-emerald-200' :
                               status === 'PREPARING' ? 'bg-amber-100 text-amber-900 border border-amber-200' :
                               status === 'PACKED' || status === 'READY' ? 'bg-purple-100 text-purple-900 border border-purple-200' :
+                              status === 'DECLINED' ? 'bg-rose-100 text-rose-900 border border-rose-200' :
                               'bg-emerald-900 text-emerald-100 border border-emerald-800'
                             }`}>
                               ● {status}
@@ -518,16 +613,25 @@ export default function AdminPage() {
                           {/* Order Action Buttons */}
                           <div className="flex flex-wrap gap-2 mt-1">
                             {status === 'PLACED' && (
-                              <button
-                                onClick={() => handleAcceptOrder(order.order_id)}
-                                disabled={packingOrderId === order.order_id}
-                                className="rounded-lg bg-emerald-800 px-4 py-2 text-xs font-black text-white hover:bg-emerald-900 shadow transition"
-                              >
-                                Accept Order
-                              </button>
+                              <>
+                                <button
+                                  onClick={() => handleAcceptOrder(order.order_id)}
+                                  disabled={packingOrderId === order.order_id}
+                                  className="rounded-lg bg-emerald-800 px-4 py-2 text-xs font-black text-white hover:bg-emerald-900 shadow transition flex items-center gap-1"
+                                >
+                                  ✓ Accept Order
+                                </button>
+                                <button
+                                  onClick={() => handleDeclineOrder(order.order_id)}
+                                  disabled={packingOrderId === order.order_id}
+                                  className="rounded-lg bg-rose-600 px-4 py-2 text-xs font-black text-white hover:bg-rose-700 shadow transition flex items-center gap-1"
+                                >
+                                  ✕ Decline Order
+                                </button>
+                              </>
                             )}
 
-                            {(status === 'PLACED' || status === 'ACCEPTED') && (
+                            {status === 'ACCEPTED' && (
                               <button
                                 onClick={() => handleStartPreparing(order.order_id)}
                                 disabled={packingOrderId === order.order_id}
@@ -566,6 +670,12 @@ export default function AdminPage() {
                               >
                                 📥 Download Invoice PDF
                               </a>
+                            )}
+
+                            {status === 'DECLINED' && (
+                              <span className="rounded-lg bg-rose-50 text-rose-700 border border-rose-200 px-3 py-1.5 text-xs font-extrabold">
+                                ✕ Order Declined by Admin
+                              </span>
                             )}
                           </div>
                         </div>
@@ -719,13 +829,23 @@ export default function AdminPage() {
                   onChange={(e) => setNewProduct({ ...newProduct, quantity_available: Number(e.target.value) })}
                   className="w-full px-3 py-2 border rounded"
                 />
-                <input
+                 <input
                   type="text"
                   placeholder="Unit (kg, litre, dozen, etc)"
                   value={newProduct.unit}
                   onChange={(e) => setNewProduct({ ...newProduct, unit: e.target.value })}
                   className="w-full px-3 py-2 border rounded"
                 />
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Variants (e.g. 50g:20:100, 1kg:320:15)"
+                    value={newProduct.variantsStr}
+                    onChange={(e) => setNewProduct({ ...newProduct, variantsStr: e.target.value })}
+                    className="w-full px-3 py-2 border rounded"
+                  />
+                  <p className="text-[10px] text-gray-500 mt-1">Optional. Format: Size:Price:Stock (separated by commas)</p>
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
                   <input
@@ -786,12 +906,22 @@ export default function AdminPage() {
                             className="w-full px-3 py-2 border rounded"
                             step="0.01"
                           />
-                          <input
+                           <input
                             type="number"
                             value={editProduct.quantity_available ?? 0}
                             onChange={(event) => setEditProduct({ ...editProduct, quantity_available: Number(event.target.value) })}
                             className="w-full px-3 py-2 border rounded"
                           />
+                        </div>
+                        <div>
+                          <input
+                            type="text"
+                            placeholder="Variants (e.g. 50g:20:100, 1kg:320:15)"
+                            value={(editProduct as any).variantsStr || ''}
+                            onChange={(event) => setEditProduct({ ...editProduct, variantsStr: event.target.value } as any)}
+                            className="w-full px-3 py-2 border rounded"
+                          />
+                          <p className="text-[10px] text-gray-500 mt-1">Optional. Format: Size:Price:Stock (separated by commas)</p>
                         </div>
                         <input
                           type="file"

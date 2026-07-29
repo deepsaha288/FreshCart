@@ -17,6 +17,9 @@ class CartItemResponse(BaseModel):
     price_snapshot: float
     quantity: int
     unit: str
+    quantity_available: int
+    is_available: bool
+    variant_id: Optional[str] = None
 
 
 class CartResponse(BaseModel):
@@ -29,6 +32,7 @@ class AddToCartRequest(BaseModel):
     """Request to add item to cart"""
     product_id: str
     quantity: int = Field(..., gt=0, description="Quantity must be greater than 0")
+    variant_id: Optional[str] = None
 
 
 class UpdateCartItemRequest(BaseModel):

@@ -151,6 +151,16 @@ async def accept_order(order_id: str):
     return result
 
 
+@router.post("/admin/{order_id}/decline", response_model=OrderResponse, tags=["admin"])
+async def decline_order(order_id: str):
+    """Admin declines order (PLACED -> DECLINED)"""
+    result = await OrderService.decline_order(order_id)
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+    return result
+
+
+
 @router.post("/admin/{order_id}/preparing", response_model=OrderResponse, tags=["admin"])
 async def start_preparing(order_id: str):
     """Admin starts order preparation (ACCEPTED -> PREPARING)"""

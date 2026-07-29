@@ -20,22 +20,22 @@ export default function LoginForm({ onSubmit, loading }: LoginFormProps) {
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
-        <label className="block text-gray-700 font-semibold mb-2">Phone Number</label>
+        <label className="block text-slate-800 font-bold mb-2 text-sm">Phone Number</label>
         <input
           type="tel"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="Enter your phone number"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+          className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-[#3c006b] focus:ring-2 focus:ring-[#ffccd5]/50 font-semibold"
           disabled={loading}
         />
-        <p className="text-sm text-gray-500 mt-1">Must be at least 10 digits</p>
+        <p className="text-xs text-slate-400 font-medium mt-1">Must be at least 10 digits (e.g. +919999999999)</p>
       </div>
 
       <button
         type="submit"
         disabled={loading || phone.length < 10}
-        className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-green-600 disabled:bg-gray-400"
+        className="w-full bg-[#3c006b] hover:bg-[#5e00a3] text-white py-3 rounded-xl font-black transition disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed shadow-md shadow-[#3c006b]/10 active:scale-98 text-sm"
       >
         {loading ? 'Sending OTP...' : 'Send OTP'}
       </button>

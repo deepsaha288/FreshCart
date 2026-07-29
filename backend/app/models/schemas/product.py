@@ -1,7 +1,23 @@
 """Product schemas"""
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel, Field
+
+
+class ProductVariantResponse(BaseModel):
+    """Product variant response schema"""
+    id: str
+    size: str
+    price: float
+    quantity_available: int
+
+
+class CreateProductVariantRequest(BaseModel):
+    """Schema to create/update a product variant"""
+    id: str = Field(..., description="Unique variant identifier (e.g. 50G, 1KG)")
+    size: str = Field(..., description="Weight or volume size text (e.g. 50g)")
+    price: float = Field(..., gt=0, description="Price of this variant")
+    quantity_available: int = Field(..., ge=0, description="Available stock quantity")
 
 
 class ProductResponse(BaseModel):
@@ -16,6 +32,7 @@ class ProductResponse(BaseModel):
     unit: str
     image_url: Optional[str] = None
     is_available: bool
+    variants: Optional[List[ProductVariantResponse]] = None
 
 
 class CreateProductRequest(BaseModel):
@@ -28,6 +45,7 @@ class CreateProductRequest(BaseModel):
     unit: str = Field(..., description="Unit of measurement (kg, litre, dozen, etc)")
     image_url: Optional[str] = None
     is_available: bool = True
+    variants: Optional[List[CreateProductVariantRequest]] = None
 
 
 class UpdateProductRequest(BaseModel):
@@ -40,6 +58,7 @@ class UpdateProductRequest(BaseModel):
     unit: Optional[str] = None
     image_url: Optional[str] = None
     is_available: Optional[bool] = None
+    variants: Optional[List[CreateProductVariantRequest]] = None
 
 
 class ProductListResponse(BaseModel):

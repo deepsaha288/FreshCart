@@ -10,6 +10,13 @@ export interface User {
   created_at: string
 }
 
+export interface ProductVariant {
+  id: string
+  size: string
+  price: number
+  quantity_available: number
+}
+
 export interface Product {
   id: string
   name: string
@@ -22,6 +29,7 @@ export interface Product {
   unit: string
   image_url?: string
   is_available: boolean
+  variants?: ProductVariant[]
 }
 
 export interface CartItem {
@@ -30,6 +38,9 @@ export interface CartItem {
   price_snapshot: number
   quantity: number
   unit: string
+  quantity_available: number
+  is_available: boolean
+  variant_id?: string
 }
 
 export interface Cart {

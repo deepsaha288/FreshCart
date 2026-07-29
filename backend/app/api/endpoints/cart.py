@@ -75,7 +75,8 @@ async def add_to_cart(request: Request):
     try:
         product_id = str(body['product_id'])
         quantity = int(body['quantity'])
-        result = await CartService.add_to_cart(user_id, product_id, quantity)
+        variant_id = body.get('variant_id')
+        result = await CartService.add_to_cart(user_id, product_id, quantity, variant_id)
         print(f"DEBUG add_to_cart: Result for user_id={user_id}: {result}")
         if "error" in result:
             raise HTTPException(status_code=400, detail=result["error"])
@@ -92,12 +93,13 @@ async def add_to_cart(request: Request):
 async def update_cart_item(
     product_id: str,
     request_body: UpdateCartItemRequest,
-    request: Request
+    request: Request,
+    variant_id: Optional[str] = None
 ):
     """Update quantity of item in cart"""
     authorization = request.headers.get("authorization")
     user_id = get_current_user(authorization)
-    result = await CartService.update_cart_item(user_id, product_id, request_body.quantity)
+    result = await CartService.update_cart_item(user_id, product_id, request_body.quantity, variant_id)
     if "error" in result:
         raise HTTPException(status_code=400, detail=result["error"])
     return {
@@ -107,11 +109,11 @@ async def update_cart_item(
 
 
 @router.delete("/items/{product_id}", response_model=CartResponse)
-async def remove_from_cart(product_id: str, request: Request):
+async def remove_from_cart(product_id: str, request: Request, variant_id: Optional[str] = None):
     """Remove item from cart"""
     authorization = request.headers.get("authorization")
     user_id = get_current_user(authorization)
-    result = await CartService.remove_from_cart(user_id, product_id)
+    result = await CartService.remove_from_cart(user_id, product_id, variant_id)
     if "error" in result:
         raise HTTPException(status_code=400, detail=result["error"])
     return {

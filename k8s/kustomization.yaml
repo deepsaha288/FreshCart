@@ -1,0 +1,6 @@
+resources:
+  - mongo.yaml
+  - redis.yaml
+  - kafka.yaml
+  - backend.yaml
+  - frontend.yaml

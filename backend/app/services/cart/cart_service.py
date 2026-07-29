@@ -90,26 +90,74 @@ class CartService:
         items = []
         total_price = 0.0
         
-        for product_id, item_data in cart.items():
+        for item_key, item_data in cart.items():
+            if ":" in item_key:
+                product_id, variant_id = item_key.split(":")
+            else:
+                product_id = item_key
+                variant_id = None
+                
+            product = await ProductService.get_product(product_id)
+            if "error" in product:
+                quantity_available = 0
+                is_available = False
+                price = item_data["price"]
+                unit = item_data["unit"]
+            else:
+                if variant_id:
+                    variants = product.get("variants") or []
+                    variant = next((v for v in variants if v["id"] == variant_id), None)
+                    if variant:
+                        quantity_available = variant.get("quantity_available", 0)
+                        is_available = product.get("is_available", True) and (quantity_available > 0)
+                        price = variant.get("price", product["price"])
+                        unit = variant.get("size", product["unit"])
+                    else:
+                        quantity_available = 0
+                        is_available = False
+                        price = item_data["price"]
+                        unit = item_data["unit"]
+                else:
+                    quantity_available = product.get("quantity_available", 0)
+                    is_available = product.get("is_available", True)
+                    price = product["price"]
+                    unit = product["unit"]
+                
             items.append({
                 "product_id": product_id,
+                "variant_id": variant_id,
                 "product_name": item_data["product_name"],
-                "price_snapshot": item_data["price"],
+                "price_snapshot": price,
                 "quantity": item_data["quantity"],
-                "unit": item_data["unit"]
+                "unit": unit,
+                "quantity_available": quantity_available,
+                "is_available": is_available
             })
-            total_price += item_data["price"] * item_data["quantity"]
+            total_price += price * item_data["quantity"]
         
         return {"items": items, "total_price": total_price}
     
     @staticmethod
-    async def add_to_cart(user_id: str, product_id: str, quantity: int) -> dict:
+    async def add_to_cart(user_id: str, product_id: str, quantity: int, variant_id: str = None) -> dict:
         """Add product to cart"""
         product = await ProductService.get_product(product_id)
         if "error" in product:
             return product
         
-        if not product["is_available"] or product["quantity_available"] < quantity:
+        price = product["price"]
+        unit = product["unit"]
+        quantity_available = product["quantity_available"]
+        
+        if variant_id:
+            variants = product.get("variants") or []
+            variant = next((v for v in variants if v["id"] == variant_id), None)
+            if not variant:
+                return {"error": "Product variant not found"}
+            price = variant["price"]
+            unit = variant["size"]
+            quantity_available = variant["quantity_available"]
+            
+        if not product["is_available"] or quantity_available < quantity:
             return {"error": "Product not available or insufficient stock"}
         
         # Get or create cart
@@ -117,91 +165,55 @@ class CartService:
             MOCK_CARTS[user_id] = {}
         
         cart = MOCK_CARTS[user_id]
+        item_key = f"{product_id}:{variant_id}" if variant_id else product_id
         
         # Add or update item
-        if product_id in cart:
-            cart[product_id]["quantity"] += quantity
+        if item_key in cart:
+            cart[item_key]["quantity"] += quantity
         else:
-            cart[product_id] = {
+            cart[item_key] = {
                 "product_name": product["name"],
-                "price": product["price"],
+                "price": price,
                 "quantity": quantity,
-                "unit": product["unit"]
+                "unit": unit
             }
         
-        # Build response
-        items = []
-        total_price = 0.0
-        for pid, item_data in cart.items():
-            items.append({
-                "product_id": pid,
-                "product_name": item_data["product_name"],
-                "price_snapshot": item_data["price"],
-                "quantity": item_data["quantity"],
-                "unit": item_data["unit"]
-            })
-            total_price += item_data["price"] * item_data["quantity"]
-        
-        return {"items": items, "total_price": total_price}
+        return await CartService.get_cart(user_id)
     
     @staticmethod
-    async def update_cart_item(user_id: str, product_id: str, quantity: int) -> dict:
+    async def update_cart_item(user_id: str, product_id: str, quantity: int, variant_id: str = None) -> dict:
         """Update quantity of item in cart"""
         if user_id not in MOCK_CARTS:
             return {"error": "Cart not found"}
         
         cart = MOCK_CARTS[user_id]
+        item_key = f"{product_id}:{variant_id}" if variant_id else product_id
         
-        if product_id not in cart:
+        if item_key not in cart:
             return {"error": "Item not in cart"}
         
         if quantity <= 0:
-            del cart[product_id]
+            del cart[item_key]
         else:
-            cart[product_id]["quantity"] = quantity
+            cart[item_key]["quantity"] = quantity
         
-        # Build response
-        items = []
-        total_price = 0.0
-        for pid, item_data in cart.items():
-            items.append({
-                "product_id": pid,
-                "product_name": item_data["product_name"],
-                "price_snapshot": item_data["price"],
-                "quantity": item_data["quantity"],
-                "unit": item_data["unit"]
-            })
-            total_price += item_data["price"] * item_data["quantity"]
-        
-        return {"items": items, "total_price": total_price}
+        return await CartService.get_cart(user_id)
     
     @staticmethod
-    async def remove_from_cart(user_id: str, product_id: str) -> dict:
+    async def remove_from_cart(user_id: str, product_id: str, variant_id: str = None) -> dict:
         """Remove item from cart"""
         if user_id not in MOCK_CARTS:
             return {"error": "Cart not found"}
         
         cart = MOCK_CARTS[user_id]
+        item_key = f"{product_id}:{variant_id}" if variant_id else product_id
         
-        if product_id not in cart:
+        if item_key not in cart:
             return {"error": "Item not in cart"}
         
-        del cart[product_id]
+        del cart[item_key]
         
-        # Build response
-        items = []
-        total_price = 0.0
-        for pid, item_data in cart.items():
-            items.append({
-                "product_id": pid,
-                "product_name": item_data["product_name"],
-                "price_snapshot": item_data["price"],
-                "quantity": item_data["quantity"],
-                "unit": item_data["unit"]
-            })
-            total_price += item_data["price"] * item_data["quantity"]
-        
-        return {"items": items, "total_price": total_price}
+        return await CartService.get_cart(user_id)
     
     @staticmethod
     async def clear_cart(user_id: str) -> dict:

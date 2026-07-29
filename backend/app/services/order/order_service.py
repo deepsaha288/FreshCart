@@ -1,13 +1,15 @@
-"""Order service"""
 import uuid
+import asyncio
 from datetime import datetime
 from typing import Dict, List
 
 from app.services.notification.sms_service import SMSService
 from app.services.invoice.pdf_service import PDFInvoiceService
+from app.services.product.product_service import ProductService, MOCK_PRODUCTS
 
 # Mock orders storage
 MOCK_ORDERS: Dict[str, dict] = {}
+checkout_lock = asyncio.Lock()
 
 
 class OrderService:
@@ -20,28 +22,54 @@ class OrderService:
         items: List[dict],
         total_price: float,
     ) -> dict:
-        """Create a new order from cart with initial PLACED status"""
+        """Create a new order from cart with initial PLACED status and atomic stock validation"""
         if not items:
             return {"error": "Cannot place order with empty cart"}
 
-        order_id = f"ORD-{uuid.uuid4().hex[:8].upper()}"
+        async with checkout_lock:
+            # 1. Validate stock for all items
+            for item in items:
+                product_id = item["product_id"]
+                quantity_requested = item["quantity"]
 
-        order = {
-            "order_id": order_id,
-            "user_id": user_id,
-            "customer_name": customer_name,
-            "items": items,
-            "total_price": total_price,
-            "status": "PLACED",
-            "created_at": datetime.utcnow().isoformat(),
-            "updated_at": datetime.utcnow().isoformat()
-        }
+                product = await ProductService.get_product(product_id)
+                if "error" in product:
+                    return {"error": f"Product '{item['product_name']}' not found"}
 
-        MOCK_ORDERS[order_id] = order
+                if not product.get("is_available", True) or product.get("quantity_available", 0) < quantity_requested:
+                    avail = product.get("quantity_available", 0)
+                    return {"error": f"Insufficient stock for '{item['product_name']}'. Only {avail} left."}
 
-        print(f"DEBUG: Order created: {order_id} with status PLACED")
+            # 2. Deduct stock
+            for item in items:
+                product_id = item["product_id"]
+                quantity_requested = item["quantity"]
 
-        return order
+                for p in MOCK_PRODUCTS:
+                    if p["id"] == product_id:
+                        p["quantity_available"] -= quantity_requested
+                        if p["quantity_available"] <= 0:
+                            p["quantity_available"] = 0
+                            p["is_available"] = False
+
+            order_id = f"ORD-{uuid.uuid4().hex[:8].upper()}"
+
+            order = {
+                "order_id": order_id,
+                "user_id": user_id,
+                "customer_name": customer_name,
+                "items": items,
+                "total_price": total_price,
+                "status": "PLACED",
+                "created_at": datetime.utcnow().isoformat(),
+                "updated_at": datetime.utcnow().isoformat()
+            }
+
+            MOCK_ORDERS[order_id] = order
+
+            print(f"DEBUG: Order created: {order_id} with status PLACED and stock decremented")
+
+            return order
 
     @staticmethod
     async def get_order(order_id: str) -> dict:
@@ -86,6 +114,20 @@ class OrderService:
         order["accepted_at"] = datetime.utcnow().isoformat()
         order["updated_at"] = datetime.utcnow().isoformat()
         return order
+
+    @staticmethod
+    async def decline_order(order_id: str, reason: str = "Declined by store admin") -> dict:
+        """Decline order (PLACED -> DECLINED)"""
+        if order_id not in MOCK_ORDERS:
+            return {"error": "Order not found"}
+
+        order = MOCK_ORDERS[order_id]
+        order["status"] = "DECLINED"
+        order["decline_reason"] = reason
+        order["declined_at"] = datetime.utcnow().isoformat()
+        order["updated_at"] = datetime.utcnow().isoformat()
+        return order
+
 
     @staticmethod
     async def start_preparing(order_id: str) -> dict:
