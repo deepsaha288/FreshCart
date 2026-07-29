@@ -28,8 +28,8 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: freshcart-frontend:latest
-          imagePullPolicy: Never # Force Kubernetes to use the local docker image built inside minikube
+          image: deepsaha288/freshcart-frontend:latest
+          imagePullPolicy: Always # Pull the image from Docker Hub
           ports:
             - containerPort: 3000
           env:
