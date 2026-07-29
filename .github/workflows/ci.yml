@@ -20,6 +20,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Verify Secret Variables
+        run: |
+          if [ -z "${{ secrets.DOCKERHUB_USERNAME }}" ]; then
+            echo "ERROR: DOCKERHUB_USERNAME secret is not set!"
+            exit 1
+          fi
+          if [ -z "${{ secrets.DOCKERHUB_TOKEN }}" ]; then
+            echo "ERROR: DOCKERHUB_TOKEN secret is not set!"
+            exit 1
+          fi
+          echo "All required secret variables are configured."
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
